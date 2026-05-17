@@ -4,9 +4,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sub40-10K">
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="icon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+    <link class="apple-touch-icon" href="icon.png">
+    <link class="apple-touch-icon" sizes="152x152" href="icon.png">
+    <link class="apple-touch-icon" sizes="180x180" href="icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sub40-10K 備賽與運動監控系統 V6</title>
@@ -257,7 +257,6 @@
                     <div class="space-y-4">
                         <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
                             <span>上肢推+硬舉</span>
-                            <span class="text-[10px] text-accent-teal uppercase font-bold tracking-wider">週一強度日</span>
                         </h4>
                         <div class="p-3 bg-brand-50 rounded-lg">
                             <strong class="text-brand-900 block text-xs font-bold">傳統槓鈴硬舉 (Deadlift)</strong>
@@ -278,7 +277,6 @@
                     <div class="space-y-4">
                         <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
                             <span>上肢拉+深蹲</span>
-                            <span class="text-[10px] text-accent-orange uppercase font-bold tracking-wider">週三容量日</span>
                         </h4>
                         <div class="p-3 bg-brand-50 rounded-lg">
                             <strong class="text-brand-900 block text-xs font-bold">槓鈴深蹲 (Back Squat)</strong>
@@ -299,7 +297,6 @@
                     <div class="space-y-4">
                         <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
                             <span>單邊+爆發 (動力重建)</span>
-                            <span class="text-[10px] text-brand-600 uppercase font-bold tracking-wider">週五神經日</span>
                         </h4>
                         <div class="p-3 bg-brand-50 rounded-lg">
                             <strong class="text-brand-900 block text-xs font-bold">單腿 RDL (Single-Leg RDL)</strong>
@@ -859,13 +856,13 @@
                 if (item.t.includes('長距離') || item.t.includes('里程')) typeKey = 'lsd';
                 if (item.t.includes('重訓') || item.t.includes('單邊')) typeKey = 'strength';
 
-                // Create Cells
+                // Create Cells with matching width styling to ensure precise layout alignment and height
                 const tdDay = document.createElement('td');
-                tdDay.className = 'p-3 font-bold text-brand-600 align-middle whitespace-nowrap';
+                tdDay.className = 'p-3 w-16 font-bold text-brand-600 align-middle whitespace-nowrap';
                 tdDay.innerText = `週${item.d}`;
 
                 const tdType = document.createElement('td');
-                tdType.className = 'p-3 text-center align-middle';
+                tdType.className = 'p-3 w-32 text-center align-middle';
                 const typeSpan = document.createElement('span');
                 typeSpan.className = 'px-2 py-1 bg-white border border-brand-200 rounded text-xs font-bold text-brand-700 block';
                 typeSpan.innerText = item.t;
@@ -876,11 +873,11 @@
                 tdContent.innerText = item.c;
 
                 const tdGoal = document.createElement('td');
-                tdGoal.className = 'p-3 text-xs italic text-brand-500 align-middle leading-relaxed';
+                tdGoal.className = 'p-3 w-52 text-xs italic text-brand-500 align-middle leading-relaxed';
                 tdGoal.innerText = item.g;
 
                 const tdAction = document.createElement('td');
-                tdAction.className = 'p-3 text-center align-middle';
+                tdAction.className = 'p-3 w-28 text-center align-middle';
                 const actionBtn = document.createElement('button');
                 actionBtn.className = 'bg-accent-teal hover:bg-teal-700 text-white text-[10px] font-bold px-2 py-1 rounded transition whitespace-nowrap';
                 actionBtn.innerText = '一鍵帶入';
@@ -1329,7 +1326,7 @@
             // Overall risk warning render and advisory messages
             const adviceEl = document.getElementById('ots-advice');
             if (riskScore >= 65) {
-                otsBadge.innerText = `🔴 高度 OTS 風險 (${riskScore}%)`;
+                otsBadge.innerText = `🔴 高度 OTS 風氣 (${riskScore}%)`;
                 otsBadge.className = "px-3 py-1 text-xs font-bold rounded-full border bg-red-100 text-red-800 border-red-200";
                 adviceEl.innerHTML = `⚠️ <strong class="text-red-700">警告：系統偵測到高度過度訓練風險！</strong>靜息心率明顯漂移，交感神經高負荷。週六 LSD 或高強度間歇需強制降階為「主動恢復 (E)」，或完全停跑休息 48 小時。`;
             } else if (riskScore >= 35) {
@@ -1592,6 +1589,7 @@
             document.getElementById('image-view-modal').classList.remove('hidden');
         }
 
+        // Close View modal
         function closeImageViewModal() {
             document.getElementById('image-view-modal').classList.add('hidden');
         }
