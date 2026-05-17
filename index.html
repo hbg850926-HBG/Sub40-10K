@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <meta name="apple-mobile-web-app-title" content="Sub40-10K">
-
-    <link rel="apple-touch-icon" href="icon.png">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sub40-10K 訓練計畫</title>
@@ -45,18 +36,21 @@
 
     <!-- Chosen Palette: Warm Sandstone (Neutrals) with Deep Teal and Rust accents -->
     <!-- Application Structure Plan: 
-         1. 戰略頁：VDOT 51.9 理論、E/M/T/I/R Pacing 表、用時小卡、TSB模型與下方詳細的漢森/丹尼爾斯系統原理。
-         2. 課表頁：四階段日期課表，平日重訓命名為「上肢推+硬舉」、「上肢拉+深蹲」、「單邊+爆發」，表頭簡化。
+         1. 戰略頁：VDOT 51.9 理論、E/M/T/I/R Pacing 表、用時小卡(防止換行)、TSB負荷模型圖、熱血跑者信條。
+         2. 課表頁：5/18 - 9/6 週期課表，重訓與訓練項目標頭正名。
          3. 重訓頁：整合硬舉、單腿RDL、啞鈴爆發力跳躍與擴充動作庫。
-         4. 追蹤頁：清空所有數據，初始值為0。
+         4. 追蹤頁：清空所有數據，支援圖片本地永久儲存、編輯與刪除。
     -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header class="bg-white border-b border-brand-200 sticky top-0 z-50 shadow-xs">
         <div class="max-w-6xl mx-auto px-6 py-3 flex flex-col md:flex-row justify-between items-center gap-3">
             <div>
-                <h1 class="text-2xl font-black text-brand-800 tracking-tight">🏆 Sub40-10K 訓練計畫</h1>
-                <p class="text-xs text-brand-600 mt-1">9/6 Panasonic Run 12.5K 目指す</p>
+                <h1 class="text-2xl font-black text-brand-800 tracking-tight">🏆 Sub40-10K 目指す</h1>
+                <p class="text-xs text-brand-600 mt-1 font-bold">9/6 Panasonic Run 12.5K 試し</p>
+            </div>
+            <!-- Hot-blooded slogan on top -->
+            <div class="hidden lg:block text-xs font-semibold text-accent-orange bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
+                ⚡ 「痛苦是暫時的，紀錄是永久的。超越昨天的自己！」
             </div>
             <nav class="flex gap-4 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
                 <button class="nav-tab active px-2 py-1 text-sm uppercase tracking-wider" onclick="switchTab('tab-strategy', this)">戰略與配速</button>
@@ -78,7 +72,7 @@
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100">
                         <div class="flex justify-between items-center border-b border-brand-100 pb-2 mb-3">
                             <h3 class="font-extrabold text-brand-800 text-sm flex items-center"><span class="mr-2 text-base">📈</span> VDOT 51.9 專項配速系統</h3>
-                            <span class="bg-accent-orange text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">10K Sub-40</span>
+                            <span class="bg-accent-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full">10K Sub-40</span>
                         </div>
                         
                         <div class="overflow-hidden rounded-lg border border-brand-100 mb-4">
@@ -100,64 +94,75 @@
                             </table>
                         </div>
 
-                        <!-- Interval Pacing/Time Card (Optimized compact layout) -->
+                        <!-- Interval Pacing/Time Card (Layout Optimized to prevent wrapping) -->
                         <div class="bg-brand-50 p-4 rounded-xl border border-brand-200">
-                            <h4 class="font-extrabold text-brand-800 text-xs mb-3 border-b border-brand-200 pb-1.5">
+                            <h4 class="font-extrabold text-brand-800 text-xs mb-2 border-b border-brand-200 pb-1">
                                 ⏱️ 太湖實測專項距離與配速用時
                             </h4>
-                            <div class="space-y-1.5 font-mono text-[11px] leading-tight">
-                                <div class="flex justify-between items-center px-2 py-1.5 bg-white rounded border border-brand-100">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 font-mono text-xs">
+                                <div class="flex justify-between items-center px-2 py-1 bg-white rounded border border-brand-100">
                                     <span class="font-sans text-brand-700 font-bold">1000m 間歇 (I)</span>
-                                    <span>配速 3'48"/km ｜ 用時: <strong class="text-brand-900 text-xs">3'48"</strong></span>
+                                    <span>配速 3'48" ｜ 單趟: <strong class="text-brand-900 text-sm">3'48"</strong></span>
                                 </div>
-                                <div class="flex justify-between items-center px-2 py-1.5 bg-white rounded border border-brand-100">
+                                <div class="flex justify-between items-center px-2 py-1 bg-white rounded border border-brand-100">
                                     <span class="font-sans text-brand-700 font-bold">800m 間歇 (I)</span>
-                                    <span>配速 3'48"/km ｜ 用時: <strong class="text-brand-900 text-xs">3'02"</strong></span>
+                                    <span>配速 3'48" ｜ 單趟: <strong class="text-brand-900 text-sm">3'02"</strong></span>
                                 </div>
-                                <div class="flex justify-between items-center px-2 py-1.5 bg-white rounded border border-brand-100">
+                                <div class="flex justify-between items-center px-2 py-1 bg-white rounded border border-brand-100">
                                     <span class="font-sans text-brand-700 font-bold">400m 反覆 (R)</span>
-                                    <span>配速 3'31"/km ｜ 用時: <strong class="text-brand-900 text-xs">84"</strong></span>
+                                    <span>配速 3'31" ｜ 單趟: <strong class="text-brand-900 text-sm">84"</strong></span>
                                 </div>
-                                <div class="flex justify-between items-center px-2 py-1.5 bg-brand-100/50 rounded border border-brand-200">
+                                <div class="flex justify-between items-center px-2 py-1 bg-brand-100/40 rounded border border-brand-200 sm:col-span-2 lg:col-span-1">
                                     <span class="font-sans text-brand-700 font-bold">太湖單圈環湖 (2.5K) @ T</span>
-                                    <span>配速 4'09"/km ｜ 用時: <strong class="text-brand-900 text-xs">10'22"</strong></span>
+                                    <span>配速 4'09" ｜ 單圈: <strong class="text-brand-900 text-sm">10'22"</strong></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: Chart (TSB Model) -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100 flex flex-col justify-between h-full">
-                    <div>
-                        <h3 class="font-bold text-brand-800 mb-3 text-center text-sm uppercase tracking-widest border-b pb-1.5">TSB 負荷平衡與狀態趨勢圖</h3>
+                <!-- Right: Chart (TSB Model) & Hot-blooded slogan card underneath -->
+                <div class="space-y-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100 flex flex-col justify-between">
+                        <h3 class="font-bold text-brand-800 mb-2 text-center text-sm uppercase tracking-widest border-b pb-1.5">TSB 負荷平衡與狀態趨勢圖</h3>
                         <div class="chart-container">
                             <canvas id="tsbChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- New Box with Hot-blooded slogan and principles to fill space -->
+                    <div class="bg-gradient-to-br from-brand-700 to-brand-700 text-white p-5 rounded-xl shadow-md space-y-3">
+                        <h4 class="font-extrabold text-sm text-accent-orange uppercase tracking-wider flex items-center">
+                            <span class="mr-1.5">🔥</span> 跑者信念 ｜ 颯
+                        </h4>
+                        <div class="border-l-2 border-accent-orange pl-3 space-y-2">
+                            <blockquote class="italic text-xs font-semibold leading-relaxed text-brand-100">
+                                「Sub40 不是奇蹟，是無數次與太湖強風與缺氧對抗的超補償結果！」
+                            </blockquote>
+                            <p class="text-xs text-brand-200 leading-relaxed">
+                                當你在太湖長直道迎著逆風、雙腿乳酸爆發時，心臟與神經正在建立強大的「氧債耐受力」。配合平日精實的重量訓練，你的動力底盤正在徹底蛻變！
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Training Systems Explanation Box under the Chart -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100 space-y-4">
+            <!-- Training Systems Explanation Box under the row -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100 space-y-4 text-xs md:text-sm">
                 <h4 class="font-bold text-brand-900 text-sm flex items-center border-b pb-2"><span class="mr-2 text-base">📘</span> 課表設計與訓練系統原理說明</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 leading-relaxed">
                     <div class="space-y-2">
-                        <p class="font-bold text-brand-800">💡 丹尼爾斯跑力方程 (Daniels' Running Formula)</p>
-                        <p class="text-xs text-brand-600">
-                            本計畫採用精密換算之 <strong>VDOT 51.9</strong> 作為唯一強度基準。有別於傳統心率易受環境、體溫及睡眠影響，VDOT 透過精確量化配速，對應您的「有氧最大吸氧量」與「跑步經濟性（RE）」。課表嚴格劃分生理區間：E配速（5'01"-5'31"）重建線粒體與微血管網；T配速（4'09"）精準刺激乳酸閥值排酸率；I配速（3'48"）與R配速（3'31"）在高氧債狀態下激活神經募集與肌肉伸縮彈性，是您太湖特訓的科學基石。
+                        <p class="font-bold text-brand-800 text-sm">💡 丹尼爾斯跑力方程 (Daniels' Running Formula)</p>
+                        <p class="text-xs text-brand-600 leading-relaxed">
+                            本計畫採用精密換算之 <strong>VDOT 51.9</strong> 作為唯一強度基準。有別於傳統心率易受環境、體溫及睡眠影響，VDOT 透過精確量化配速，對應您的「有氧最大吸氧量」與「跑步經濟性（RE）」。課表針對太湖方正地形設計，E配速（5'01"-5'31"）重建線粒體與微血管網；T配速（4'09"）精準刺激乳酸閥值排酸率；I配速（3'48"）與R配速（3'31"）在高氧債狀態下激活神經募集，是突破 Sub40 的科學基石。
                         </p>
                     </div>
                     <div class="space-y-2">
-                        <p class="font-bold text-brand-800">💡 漢森訓練法 (Hansen Method) 與雙棲體態融合</p>
-                        <p class="text-xs text-brand-600">
-                            與漢森強調「累積疲勞（Cumulative Fatigue）」、縮短長跑單次里程但維持高頻率跑感的邏輯互補，本計畫專為追求精實、飽滿體態的跑者設計，非純馬拉松選手的乾癟體型。我們在跑步課表之外，高難度地嵌入了 <strong>「上肢推+硬舉」</strong>、 <strong>「上肢拉+深蹲」</strong> 與 <strong>「單邊+爆發」</strong> 的大重量、慢離心、高爆發阻力訓練，不僅避免肌肉被跑步過度分解，更建立下肢剛性以縮短觸地時間（GCT < 210ms）。
+                        <p class="font-bold text-brand-800 text-sm">💡 漢森訓練法 (Hansen Method) 與鐵人體態融合</p>
+                        <p class="text-xs text-brand-600 leading-relaxed">
+                            本計畫非純馬拉松選手的偏瘦體型設計，而是專為追求鐵人或雙棲精實體態的運動員打造。我們在跑步課表外，高難度地嵌入了 <strong>「上肢推+硬舉」</strong>、 <strong>「上肢拉+深蹲」</strong> 與 <strong>「單邊+爆發」</strong> 的離心阻力訓練。這種高低壓力合併策略，在不增加足底負擔的同時大幅增強肌肉剛性（Stiffness），縮短地反作用力觸地時間（GCT），讓每一步都充滿爆發力。
                         </p>
                     </div>
-                </div>
-                <div class="bg-brand-50 p-4 rounded-lg border border-brand-100 text-xs text-brand-600">
-                    <strong>📈 週期化編排與超補償：</strong> 
-                    訓練由基礎建立期、專項強化期、體能巔峰期，過渡至賽前減量期。在減量期中，透過降低 40%-60% 的跑量但維持專項強度配速，讓疲勞陡降，迫使身體各細胞機能在 9/6 Panasonic Run 比賽日觸發「超補償效應」，使狀態（Form）衝向巔峰。
                 </div>
             </div>
         </section>
@@ -173,13 +178,13 @@
 
             <div class="bg-white rounded-xl shadow-sm border border-brand-100 overflow-hidden">
                 <div class="overflow-x-auto table-scroll">
-                    <table class="w-full text-left border-collapse min-w-[800px] text-xs">
+                    <table class="w-full text-left border-collapse min-w-[800px] text-xs md:text-sm">
                         <thead class="bg-brand-50 text-brand-700 font-bold border-b border-brand-200">
                             <tr>
-                                <th class="p-3 w-16">星期</th>
-                                <th class="p-3 w-40 text-center">項目</th>
-                                <th class="p-3">訓練內容</th>
-                                <th class="p-3 w-52">體感與專項目標</th>
+                                <th class="p-3 w-16 align-middle">星期</th>
+                                <th class="p-3 w-40 text-center align-middle">項目</th>
+                                <th class="p-3 align-middle">訓練內容</th>
+                                <th class="p-3 w-56 align-middle">體感與專項目標</th>
                             </tr>
                         </thead>
                         <tbody id="schedule-body" class="divide-y divide-brand-50 font-sans text-brand-800">
@@ -193,62 +198,78 @@
         <!-- SECTION 3: Strength -->
         <section id="tab-strength" class="tab-content">
             <div class="mb-6 border-b border-brand-200 pb-4">
-                <h2 class="text-xl font-bold text-brand-800 tracking-tight">🏋️ 專項重訓計畫庫</h2>
-                <p class="text-brand-600 text-sm italic">針對下肢動力鏈傳導剛性、核心剛性與擺臂抗扭轉穩定性設計。</p>
+                <div class="flex justify-between items-center flex-wrap gap-2">
+                    <div>
+                        <h2 class="text-xl font-bold text-brand-800 tracking-tight">🏋️ 專項重訓計畫庫</h2>
+                        <p class="text-brand-600 text-xs italic">針對下肢動力鏈傳導剛性、核心剛性與擺臂抗扭轉穩定性設計。</p>
+                    </div>
+                    <span class="text-xs font-bold text-accent-teal bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
+                        ⚡ 「每一次重訓的發力，都是太湖直道上的推進引擎！」
+                    </span>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-xs">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-xs md:text-sm">
                 <!-- Box 1 -->
                 <div class="bg-white p-5 rounded-xl border-t-4 border-t-accent-teal shadow-md flex flex-col justify-between">
                     <div class="space-y-4">
-                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1">上肢推+硬舉</h4>
+                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
+                            <span>上肢推+硬舉</span>
+                            <span class="text-[10px] text-accent-teal uppercase font-bold tracking-wider">週一強度日</span>
+                        </h4>
                         <div class="p-3 bg-brand-50 rounded-lg">
                             <strong class="text-brand-900 block text-xs font-bold">傳統槓鈴硬舉 (Deadlift)</strong>
-                            <p class="text-brand-700 leading-relaxed mt-1">5 組 x 5 次 (75-85% 1RM)。建立下肢後側鏈剛性與脊椎抗彎曲剛性，避免長跑後半程骨盆塌陷，維持穩定前傾。</p>
+                            <p class="text-brand-700 leading-relaxed mt-1 text-xs">執行 5 組 x 5 次 (75-85% 1RM)。建立下肢後側鏈剛性與脊椎抗彎曲剛性，避免長跑後半程骨盆塌陷，維持穩定前傾。</p>
                         </div>
                         <div class="p-2">
                             <strong class="text-brand-900 block text-xs font-semibold">槓鈴/啞鈴臥推 (Bench Press)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1">4 組 x 8 次。強化擺臂時的胸椎抗扭轉能力，確保軀幹不晃動。</p>
+                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 組 x 8 次。強化擺臂時的胸椎抗扭轉能力，確保軀幹不晃動。</p>
                         </div>
                         <div class="p-2">
                             <strong class="text-brand-900 block text-xs font-semibold">懸垂舉腿 / 懸吊捲腹</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1">3 組 x 15 次。在重力懸吊下建立深層腹直肌抗疲勞能力。</p>
+                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 3 組 x 15 次。在重力懸吊下建立深層腹直肌抗疲勞能力。</p>
                         </div>
                     </div>
                 </div>
                 <!-- Box 2 -->
                 <div class="bg-white p-5 rounded-xl border-t-4 border-t-accent-orange shadow-md flex flex-col justify-between">
                     <div class="space-y-4">
-                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1">上肢拉+深蹲</h4>
+                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
+                            <span>上肢拉+深蹲</span>
+                            <span class="text-[10px] text-accent-orange uppercase font-bold tracking-wider">週三容量日</span>
+                        </h4>
                         <div class="p-3 bg-brand-50 rounded-lg">
                             <strong class="text-brand-900 block text-xs font-bold">槓鈴深蹲 (Back Squat)</strong>
-                            <p class="text-brand-700 leading-relaxed mt-1">4 組 x 8 次。強化股四頭肌與臀大肌，這是跑步觸地時主要的剛性支撐肌群，能縮短觸地時間。</p>
+                            <p class="text-brand-700 leading-relaxed mt-1 text-xs">執行 4 組 x 8 次。強化股四頭肌與臀大肌，這是跑步觸地時主要的剛性支撐肌群，能縮短觸地時間。</p>
                         </div>
                         <div class="p-2">
                             <strong class="text-brand-900 block text-xs font-semibold">加重引體向上 (Pull-up)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1">4 組 x 6-8 次。收緊擺臂主要抗阻背肌群，維持挺拔姿態。</p>
+                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 組 x 6-8 次。收緊擺臂主要抗阻背肌群，維持挺拔姿態。</p>
                         </div>
                         <div class="p-2">
                             <strong class="text-brand-900 block text-xs font-semibold">負重農夫走路 (Farmer Walk)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1">4 趟 x 40 公尺。強化核心抗扭轉，建立支撐期轉換時的足踝剛性。</p>
+                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 趟 x 40 公尺。強化核心抗扭轉，建立支撐期轉換時的足踝剛性。</p>
                         </div>
                     </div>
                 </div>
                 <!-- Box 3 -->
                 <div class="bg-white p-5 rounded-xl border-t-4 border-t-brand-800 shadow-md flex flex-col justify-between">
                     <div class="space-y-4">
-                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1">單邊+爆發</h4>
+                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
+                            <span>單邊+爆發</span>
+                            <span class="text-[10px] text-brand-600 uppercase font-bold tracking-wider">週五神經日</span>
+                        </h4>
                         <div class="p-3 bg-brand-50 rounded-lg">
                             <strong class="text-brand-900 block text-xs font-bold">單腿 RDL (Single-Leg RDL)</strong>
-                            <p class="text-brand-700 leading-relaxed mt-1">3 組 x 12 次/側。修正跑步左右側動力鏈失衡，訓練臀中肌與大腿後側膕繩肌。</p>
+                            <p class="text-brand-700 leading-relaxed mt-1 text-xs">執行 3 組 x 12 次/側。修正跑步左右側動力鏈失衡，訓練臀中肌與大腿後側膕繩肌。</p>
                         </div>
                         <div class="p-2">
                             <strong class="text-accent-orange block text-xs font-bold">啞鈴深蹲跳 (Dumbbell Squat Jump)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1">4 組 x 10 次。手持輕啞鈴，強調落地的快速離心緩衝與重新蹬伸，提高神經肌肉募集率。</p>
+                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 組 x 10 次。手持輕啞鈴，強調落地的快速離心緩衝與重新蹬伸，提高神經肌肉募集率。</p>
                         </div>
                         <div class="p-2">
                             <strong class="text-brand-900 block text-xs font-semibold">保加利亞單腿蹲 (Bulgarian Squat)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1">3 組 x 12 次/側。建立骨盆單邊穩定度，是徹底防護膝關節與預防受傷的黃金動作。</p>
+                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 3 組 x 12 次/側。建立骨盆單邊穩定度，是徹底防護膝關節與預防受傷的黃金動作。</p>
                         </div>
                     </div>
                 </div>
@@ -256,7 +277,7 @@
 
             <!-- Backups Column (備選動作填滿版面) -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100 text-xs">
-                <h3 class="font-bold text-brand-800 text-sm mb-3 flex items-center border-b pb-1.5">
+                <h3 class="font-bold text-brand-800 text-xs md:text-sm mb-3 flex items-center border-b pb-1.5">
                     <span class="mr-2">♻️</span> 健身房備用動作庫 (自主訓練靈活切換，保持版面飽滿)
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-brand-800">
@@ -285,12 +306,18 @@
             </div>
         </section>
 
-        <!-- SECTION 4: Training Tracker (Completely Cleared) -->
+        <!-- SECTION 4: Training Tracker (Offline LocalStorage Engine) -->
         <section id="tab-track" class="tab-content">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-xs">
+            <!-- Alert message for top motivation -->
+            <div class="mb-4 p-3 bg-teal-50 text-accent-teal rounded-xl border border-teal-100 font-bold flex justify-between items-center text-xs">
+                <span>🔥 「每一滴流在太湖的汗水，都是 9/6 賽道上的光芒。今天，你超越昨天的自己了嗎？」</span>
+                <span class="hidden sm:inline font-mono">VDOT: 51.9 TARGET</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Input Column -->
                 <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-xl border border-brand-100">
-                    <h3 class="font-bold text-brand-800 mb-4 flex items-center"><span class="mr-2">📝</span> 紀錄今日訓練</h3>
+                    <h3 id="form-title" class="font-bold text-brand-800 mb-4 flex items-center"><span class="mr-2">📝</span> 紀錄今日訓練</h3>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-brand-500 mb-1">訓練類型</label>
@@ -306,22 +333,33 @@
                             <label class="block text-xs font-bold text-brand-500 mb-1 font-mono">日期</label>
                             <input type="date" id="log-date" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-sm outline-none">
                         </div>
+                        
+                        <!-- File Upload Box inside Day Record -->
                         <div>
-                            <label class="block text-xs font-bold text-brand-500 mb-1">上傳訓練紀錄 (數據模擬)</label>
-                            <div class="flex gap-2">
-                                <input type="file" id="log-img" class="text-[10px] flex-grow">
-                                <button onclick="mockAnalysis()" class="bg-accent-teal text-white px-3 py-1 rounded text-xs font-bold hover:bg-teal-700">模擬讀取</button>
+                            <label class="block text-xs font-bold text-brand-500 mb-1">上傳跑錶數據/圖片紀錄</label>
+                            <div class="flex items-center gap-2">
+                                <input type="file" id="log-img" accept="image/*" class="text-[10px] flex-grow">
+                                <button onclick="mockAnalysis()" class="bg-accent-teal text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-teal-700 whitespace-nowrap">模擬讀取</button>
+                            </div>
+                            <!-- Image preview loaded dynamically -->
+                            <div class="mt-2 relative">
+                                <img id="image-preview-thumbnail" class="hidden max-h-24 rounded object-cover border border-brand-200 shadow-xs" src="" alt="preview">
+                                <button id="remove-preview-btn" onclick="removeUploadedImage()" class="hidden absolute top-1 left-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs shadow-md">×</button>
                             </div>
                         </div>
+
                         <div id="analysis-box" class="hidden bg-brand-100 p-3 rounded-lg border border-dashed border-brand-300 text-[11px] leading-relaxed">
                             <p class="font-bold text-brand-800">✅ 數據讀取成功 ( 模擬 )：</p>
                             <p>距離：5.21 km ｜ 均速：4'26"/km ｜ 步頻：178 spm</p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-brand-500 mb-1">訓練心得與感受</label>
-                            <textarea id="log-notes" rows="4" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none" placeholder="今天特訓的體感如何？..."></textarea>
+                            <textarea id="log-notes" rows="4" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none" placeholder="今天太湖東側長直道逆風強勁，最後一趟心率來到172..."></textarea>
                         </div>
-                        <button onclick="saveTrainingLog()" class="w-full bg-brand-800 text-white py-3 rounded-xl text-sm font-bold shadow-lg hover:bg-brand-900 transition-transform active:scale-95">儲存紀錄</button>
+                        <div class="flex gap-2">
+                            <button id="cancel-edit-btn" onclick="cancelEdit()" class="hidden flex-1 bg-gray-200 text-brand-700 py-3 rounded-xl text-sm font-bold shadow-md hover:bg-gray-300 transition-transform">取消編輯</button>
+                            <button onclick="saveTrainingLog()" class="flex-grow bg-brand-800 text-white py-3 rounded-xl text-sm font-bold shadow-lg hover:bg-brand-900 transition-transform active:scale-95" id="submit-btn-text">儲存紀錄</button>
+                        </div>
                     </div>
                 </div>
 
@@ -329,19 +367,19 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-xs font-bold text-brand-400">間歇</span>
+                            <span class="block text-xs font-bold text-brand-400">間歇次數</span>
                             <strong id="stat-interval" class="text-xl text-accent-orange">0</strong>
                         </div>
                         <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-xs font-bold text-brand-400">門檻</span>
+                            <span class="block text-xs font-bold text-brand-400">門檻次數</span>
                             <strong id="stat-tempo" class="text-xl text-accent-teal">0</strong>
                         </div>
                         <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-xs font-bold text-brand-400">LSD</span>
+                            <span class="block text-xs font-bold text-brand-400">LSD 次數</span>
                             <strong id="stat-lsd" class="text-xl text-brand-600">0</strong>
                         </div>
                         <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-xs font-bold text-brand-400">肌力</span>
+                            <span class="block text-xs font-bold text-brand-400">肌力次數</span>
                             <strong id="stat-strength" class="text-xl text-brand-800">0</strong>
                         </div>
                     </div>
@@ -349,9 +387,10 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-brand-100 overflow-hidden">
                         <div class="bg-brand-50 p-4 border-b flex justify-between items-center">
                             <h3 class="font-bold text-brand-800 text-sm">歷史訓練紀錄 (2026 週期)</h3>
-                            <button onclick="clearAllLogs()" class="text-xs text-red-600 hover:underline">清空所有</button>
+                            <button onclick="clearAllLogs()" class="text-xs text-red-600 hover:underline font-bold">清空所有</button>
                         </div>
-                        <div id="log-list" class="divide-y max-h-[480px] overflow-y-auto">
+                        <div id="log-list" class="divide-y max-h-[480px] overflow-y-auto p-4 space-y-3 bg-brand-50/10">
+                            <!-- Logs dynamically loaded from LocalStorage -->
                             <p id="empty-message" class="p-8 text-center text-brand-400 text-sm italic leading-relaxed">目前無紀錄。請從左側上傳數據截圖或手動輸入今天太湖或健身房的訓練心得，開始記錄 2026 課表進度！</p>
                         </div>
                     </div>
@@ -361,12 +400,34 @@
 
     </main>
 
-    <footer class="bg-brand-900 text-brand-200 py-8 px-6 text-center text-xs mt-auto">
-        <p>© 2026 太湖 Sub-40 備賽與紀錄系統 ｜ 金門金湖訓練基地</p>
+    <!-- Custom Modal for confirmations (Safe from iFrame sandbox blockages) -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-brand-200">
+            <h3 class="text-brand-900 font-extrabold text-base mb-2 flex items-center"><span class="mr-1.5 text-red-500">⚠️</span> 確認刪除</h3>
+            <p class="text-xs text-brand-600 mb-4">你確定要刪除這筆珍貴的訓練紀錄嗎？此動作將無法復原。</p>
+            <div class="flex justify-end gap-2 text-xs font-bold">
+                <button onclick="closeConfirmModal()" class="px-3.5 py-2 bg-gray-100 text-brand-700 rounded-lg hover:bg-gray-200 transition">取消</button>
+                <button id="modal-delete-confirm-btn" class="px-3.5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">確認刪除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image View Lightbox Modal -->
+    <div id="image-view-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="closeImageViewModal()">
+        <img id="image-view-target" class="max-w-full max-h-full rounded-lg shadow-2xl border border-white" src="" alt="Full view">
+    </div>
+
+    <footer class="bg-brand-900 text-brand-200 py-6 px-6 text-center text-xs mt-auto">
+        <p>© 2026 太湖 Sub-40 備賽與紀錄系統 V5 ｜ 金門金湖訓練基地</p>
     </footer>
 
     <script>
-        // 保持原有的課表數據不變
+        const STORAGE_KEY = 'sub40_training_logs_v5';
+        let trainingLogs = [];
+        let editIndex = -1;
+        let uploadedImageBase64 = null;
+        let pendingDeleteIndex = -1;
+
         const schedules = {
             base: [
                 { d: "一", t: "上肢推+硬舉", c: "傳統槓鈴硬舉 (5x5) + 臥推與核心懸垂舉腿", g: "全身張力建立與擺臂擺幅穩定" },
@@ -387,7 +448,7 @@
                 { d: "日", t: "交叉訓練", c: "單車 120 分鐘或輕鬆游泳 60 分鐘", g: "交叉心肺運作，軟組織與神經疲勞清除修復" }
             ],
             peak: [
-                { d: "一", t: "全身重訓", c: "硬舉/深蹲 (3-5RM 高負荷刺激) + 引體向上/臥推", g: "賽前神經最上限募集，激活最高等級肌肉剛性" },
+                { d: "一", t: "上肢推+硬舉", c: "硬舉/深蹲 (3-5RM 高負荷刺激) + 引體向上/臥推", g: "賽前神經最上限募集，激活最高等級肌肉剛性" },
                 { d: "二", t: "速度間歇 (R)", c: "太湖直線 400m x 12 趟 (單趟極致目標 82\"，趟間全休3')", g: "開發無氧高儲備功率，刺激快縮肌募集效率" },
                 { d: "三", t: "輕鬆跑 (E)", c: "太湖 2 圈 (5.0 km) E配速極慢放鬆跑 (目標 5'30\" 配速)", g: "消除前日無氧乳酸債，活化肌肉微血管網恢復" },
                 { d: "四", t: "配速實測 (P)", c: "太湖 4 圈 (10.0 km) 穩配目標配速 (目標 3'59\"/km)", g: "Sub-40 實戰定速體感鎖定，掌握太湖環湖節奏" },
@@ -398,16 +459,13 @@
             taper: [
                 { d: "一", t: "肌肉張力喚醒", c: "保加利亞單腿蹲 + 核心穩定 (訓練容量減半)", g: "維持中樞動能張力，防止關節與肌群產生遲鈍" },
                 { d: "二", t: "速度間歇 (I)", c: "太湖 1000m x 3 趟 (目標 3'48\" / 1000m，趟間走跑4')", g: "維持高攝氧通路活性，細胞燃料系統激活" },
-                { d: "三", t: "輕鬆跑 (E)", c: "太湖 1 圈 (2.5 km) 極慢速度輕鬆放跑", g: "徹底清除深層組織疲勞，重建肌纖維剛性" },
+                { d: "三", t: "輕鬆跑 (E)", c: "太湖 1 圈 (2.5 km) 極慢速度輕鬆放跑", g: "徹底清除深層組織疲勞，重建肌肝醣蓄積" },
                 { d: "四", t: "目標配速模擬", c: "3.0 km 穩配 3'59\" 體感跑 + 短衝刺 3 趟", g: "配速信心定格，消除多餘賽前心理壓力" },
                 { d: "五", t: "能量儲存", c: "全天休息 + 積極超補高複合碳水化合物", g: "填滿肌肝醣能儲，為賽前創造最飽滿油箱" },
                 { d: "六", t: "賽前喚醒", c: "15 分鐘慢跑 + 衝刺 3 趟 (熱身落於賽事速度)", g: "引爆肌肉神經元興奮感，調整最佳起跑狀態" },
-                { d: '日', t: "🎯 驗收日", c: "9/6 當天：Panasonic Run 12.5K 賽事 (目標 Sub-50 完賽)", g: "實現 10k Sub-40 破 PB 完賽！" }
+                { d: "日", t: "🎯 驗收日", c: "9/6 當天：Panasonic Run 12.5K 賽事 (目標 Sub-50 完賽)", g: "實現 10k Sub-40 破 PB 完賽！" }
             ]
         };
-
-        // 初始化資料庫連動
-        let trainingLogs = JSON.parse(localStorage.getItem('sub40_training_logs')) || [];
 
         function switchTab(tabId, el) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -423,10 +481,10 @@
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-brand-50 transition border-b border-brand-100';
                 tr.innerHTML = `
-                    <td class="p-3 font-bold text-brand-600 whitespace-nowrap">週${item.d}</td>
-                    <td class="p-3 text-center"><span class="px-2 py-1 bg-white border border-brand-200 rounded text-xs font-bold text-brand-700 block">${item.t}</span></td>
-                    <td class="p-3 font-bold text-brand-900 leading-relaxed">${item.c}</td>
-                    <td class="p-3 text-xs italic text-brand-500 leading-relaxed">${item.g}</td>
+                    <td class="p-3 font-bold text-brand-600 align-top whitespace-nowrap">週${item.d}</td>
+                    <td class="p-3 text-center align-top"><span class="px-2 py-1 bg-white border border-brand-200 rounded text-xs font-bold text-brand-700 block">${item.t}</span></td>
+                    <td class="p-3 font-bold text-brand-900 align-top leading-relaxed text-sm">${item.c}</td>
+                    <td class="p-3 text-xs italic text-brand-500 align-top leading-relaxed">${item.g}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -437,41 +495,90 @@
             if(el) { el.classList.add('bg-brand-700', 'text-white'); el.classList.remove('bg-white', 'text-brand-700'); }
         }
 
+        // Image loading logic
+        document.getElementById('log-img').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    uploadedImageBase64 = event.target.result;
+                    const preview = document.getElementById('image-preview-thumbnail');
+                    preview.src = uploadedImageBase64;
+                    preview.classList.remove('hidden');
+                    document.getElementById('remove-preview-btn').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function removeUploadedImage() {
+            uploadedImageBase64 = null;
+            const preview = document.getElementById('image-preview-thumbnail');
+            preview.src = "";
+            preview.classList.add('hidden');
+            document.getElementById('remove-preview-btn').classList.add('hidden');
+            document.getElementById('log-img').value = "";
+        }
+
         function mockAnalysis() {
             document.getElementById('analysis-box').classList.remove('hidden');
         }
 
-        // 渲染歷史紀錄與統計卡片
+        function loadLogs() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            trainingLogs = data ? JSON.parse(data) : [];
+            renderLogs();
+        }
+
+        function saveLogsToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(trainingLogs));
+            renderLogs();
+        }
+
         function renderLogs() {
             const list = document.getElementById('log-list');
             list.innerHTML = '';
             
-            const stats = { interval: 0, tempo: 0, lsd: 0, strength: 0, easy: 0 };
+            let stats = { interval: 0, tempo: 0, lsd: 0, strength: 0, easy: 0 };
 
             if (trainingLogs.length === 0) {
-                list.innerHTML = `<p id="empty-message" class="p-8 text-center text-brand-400 text-sm italic leading-relaxed">目前無紀錄。請從左側上傳數據截圖或手動輸入今天太湖或健身房的訓練心得，開始記錄 2026 課表進度！</p>`;
+                list.innerHTML = `
+                    <p id="empty-message" class="p-8 text-center text-brand-400 text-sm italic leading-relaxed">
+                        目前無紀錄。請從左側上傳數據截圖或手動輸入今天太湖或健身房的訓練心得，開始記錄 2026 課表進度！
+                    </p>
+                `;
             } else {
-                // 由新到舊排序顯示
-                [...trainingLogs].reverse().forEach((log) => {
-                    const div = document.createElement('div');
-                    div.className = 'p-4 hover:bg-brand-50 transition border-l-4 border-l-brand-800 bg-white mb-2 rounded-xl border border-brand-100';
-                    div.innerHTML = `
+                trainingLogs.forEach((log, index) => {
+                    stats[log.type]++;
+                    
+                    let imgHtml = '';
+                    if (log.img) {
+                        imgHtml = `
+                            <div class="mt-2">
+                                <img src="${log.img}" class="max-h-24 rounded border border-brand-200 object-cover cursor-pointer hover:opacity-90" onclick="viewImageFull('${log.img}')">
+                            </div>
+                        `;
+                    }
+
+                    const item = document.createElement('div');
+                    item.className = 'p-4 hover:bg-brand-50 transition border-l-4 border-l-brand-800 bg-white mb-2 rounded-xl border border-brand-100 relative';
+                    item.innerHTML = `
                         <div class="flex justify-between items-start mb-2">
                             <span class="px-2 py-0.5 bg-brand-800 text-white rounded text-[10px] font-bold uppercase tracking-wider">${log.type}</span>
-                            <span class="text-[11px] text-brand-400 font-mono">${log.date}</span>
+                            <span class="text-xs text-brand-400 font-mono">${log.date}</span>
                         </div>
-                        <h4 class="font-bold text-brand-800 text-sm">今日訓練紀錄 - ${log.typeText}</h4>
-                        <p class="text-sm text-brand-700 mt-2 italic leading-relaxed font-semibold">${log.notes}</p>
+                        <p class="text-sm text-brand-700 italic leading-relaxed font-semibold pr-16">${log.notes}</p>
+                        ${imgHtml}
+                        <div class="absolute right-2 bottom-2 flex gap-1">
+                            <button onclick="editLog(${index})" class="text-xs text-accent-teal hover:underline font-bold px-2 py-1">編輯</button>
+                            <button onclick="confirmDelete(${index})" class="text-xs text-red-600 hover:underline font-bold px-2 py-1">刪除</button>
+                        </div>
                     `;
-                    list.appendChild(div);
-                    
-                    if(stats.hasOwnProperty(log.type)) {
-                        stats[log.type]++;
-                    }
+                    list.appendChild(item);
                 });
             }
 
-            // 更新統計看板
+            // Update stats cards
             document.getElementById('stat-interval').innerText = stats.interval;
             document.getElementById('stat-tempo').innerText = stats.tempo;
             document.getElementById('stat-lsd').innerText = stats.lsd;
@@ -479,46 +586,113 @@
         }
 
         function saveTrainingLog() {
-            const typeSelect = document.getElementById('log-type');
-            const typeValue = typeSelect.value;
-            const typeText = typeSelect.options[typeSelect.selectedIndex].text;
+            const type = document.getElementById('log-type').value;
             const notes = document.getElementById('log-notes').value;
-            const date = document.getElementById('log-date').value || new Date().toISOString().split('T')[0];
+            const date = document.getElementById('log-date').value;
             
-            if(!notes) {
-                alert('請輸入訓練心得再儲存功能喔！');
-                return;
-            }
+            if(!notes || !date) return;
 
-            const newLog = {
-                type: typeValue,
-                typeText: typeText,
+            const logItem = {
+                type: type,
+                date: date,
                 notes: notes,
-                date: date
+                img: uploadedImageBase64
             };
 
-            trainingLogs.push(newLog);
-            localStorage.setItem('sub40_training_logs', JSON.stringify(trainingLogs));
-            
-            renderLogs();
+            if (editIndex > -1) {
+                trainingLogs[editIndex] = logItem;
+                editIndex = -1;
+                document.getElementById('submit-btn-text').innerText = '儲存紀錄';
+                document.getElementById('cancel-edit-btn').classList.add('hidden');
+                document.getElementById('form-title').innerHTML = '<span>📝</span> 紀錄今日訓練';
+            } else {
+                trainingLogs.unshift(logItem);
+            }
 
-            // 清空輸入框
+            saveLogsToStorage();
+            
+            // Clear inputs
             document.getElementById('log-notes').value = '';
+            document.getElementById('log-date').valueAsDate = new Date();
+            removeUploadedImage();
             document.getElementById('analysis-box').classList.add('hidden');
         }
 
+        function editLog(index) {
+            editIndex = index;
+            const log = trainingLogs[index];
+            document.getElementById('log-type').value = log.type;
+            document.getElementById('log-date').value = log.date;
+            document.getElementById('log-notes').value = log.notes;
+            
+            if (log.img) {
+                uploadedImageBase64 = log.img;
+                const preview = document.getElementById('image-preview-thumbnail');
+                preview.src = log.img;
+                preview.classList.remove('hidden');
+                document.getElementById('remove-preview-btn').classList.remove('hidden');
+            } else {
+                removeUploadedImage();
+            }
+
+            document.getElementById('submit-btn-text').innerText = '更新紀錄';
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            document.getElementById('form-title').innerHTML = '<span>✏️</span> 編輯訓練紀錄';
+            
+            // Scroll to form smoothly
+            document.getElementById('tab-track').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            editIndex = -1;
+            document.getElementById('log-notes').value = '';
+            document.getElementById('log-date').valueAsDate = new Date();
+            removeUploadedImage();
+            document.getElementById('submit-btn-text').innerText = '儲存紀錄';
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            document.getElementById('form-title').innerHTML = '<span>📝</span> 紀錄今日訓練';
+        }
+
+        function confirmDelete(index) {
+            pendingDeleteIndex = index;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            pendingDeleteIndex = -1;
+        }
+
+        document.getElementById('modal-delete-confirm-btn').addEventListener('click', function() {
+            if (pendingDeleteIndex > -1) {
+                trainingLogs.splice(pendingDeleteIndex, 1);
+                saveLogsToStorage();
+                closeConfirmModal();
+            }
+        });
+
         function clearAllLogs() {
-            if(confirm('確定要清空 2026 週期的所有訓練紀錄嗎？此動作無法復原。')) {
+            if (confirm('確定要清空所有的訓練紀錄嗎？此操作無法恢復！')) {
                 trainingLogs = [];
-                localStorage.removeItem('sub40_training_logs');
-                renderLogs();
+                saveLogsToStorage();
             }
         }
 
+        function viewImageFull(src) {
+            const target = document.getElementById('image-view-target');
+            target.src = src;
+            document.getElementById('image-view-modal').classList.remove('hidden');
+        }
+
+        function closeImageViewModal() {
+            document.getElementById('image-view-modal').classList.add('hidden');
+        }
+
         window.onload = () => {
+            document.getElementById('log-date').valueAsDate = new Date();
             updateSchedule('base');
             initCharts();
-            renderLogs(); // 初始化讀取歷史紀錄
+            loadLogs();
         };
 
         function initCharts() {
