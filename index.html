@@ -460,18 +460,12 @@
                                 <label class="block text-xs font-bold text-brand-500 mb-1">上傳跑錶截圖/動作紀錄 (本地儲存)</label>
                                 <div class="flex items-center gap-2">
                                     <input type="file" id="log-img" accept="image/*" class="text-[10px] flex-grow">
-                                    <button onclick="mockAnalysis()" class="bg-accent-teal text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-teal-700 whitespace-nowrap">數據模擬讀取</button>
                                 </div>
                                 <!-- Image preview loaded dynamically -->
                                 <div class="mt-2 relative">
                                     <img id="image-preview-thumbnail" class="hidden max-h-24 rounded object-cover border border-brand-200 shadow-xs" src="" alt="preview">
                                     <button id="remove-preview-btn" onclick="removeUploadedImage()" class="hidden absolute top-1 left-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs shadow-md">×</button>
                                 </div>
-                            </div>
-
-                            <div id="analysis-box" class="hidden bg-teal-50 p-3 rounded-lg border border-dashed border-accent-teal text-[11px] leading-relaxed">
-                                <p class="font-bold text-accent-teal">✅ 運動手錶數據讀取成功 ( 模擬 )：</p>
-                                <p>配速：3'48"/km ｜ 步頻：184 spm ｜ 觸地時間：175ms</p>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-brand-500 mb-1">訓練與感受日誌</label>
@@ -1121,6 +1115,7 @@
             document.getElementById('sls-diagnosis-text').innerHTML = reportText;
         }
 
+        // Save SLS assessment method
         function saveSLSAssessment() {
             const sway = parseFloat(document.getElementById('input-sway').value);
             const pelvis = parseFloat(document.getElementById('input-pelvis').value);
@@ -1366,11 +1361,6 @@
             document.getElementById('log-img').value = "";
         }
 
-        function mockAnalysis() {
-            document.getElementById('analysis-box').classList.remove('hidden');
-            showStatusToast("📊 運動手錶數據讀取成功！");
-        }
-
         // --- LOCAL STORAGE DATA ENGINE ---
         function loadLogs() {
             const data = localStorage.getItem(STORAGE_KEY);
@@ -1511,7 +1501,6 @@
             document.getElementById('log-date').valueAsDate = new Date();
             document.getElementById('log-resthr').value = '';
             removeUploadedImage();
-            document.getElementById('analysis-box').classList.add('hidden');
         }
 
         function editLog(index) {
