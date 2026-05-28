@@ -14,6 +14,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf.js CDN for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -104,12 +106,14 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <!-- Left: VDOT 51.9 table and interval pacing card -->
+                <!-- Left: VDOT table and interval pacing card -->
                 <div class="space-y-4">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100">
                         <div class="flex justify-between items-center border-b border-brand-100 pb-2 mb-3">
-                            <h3 class="font-extrabold text-brand-800 text-sm flex items-center"><span class="mr-2 text-base">📈</span> VDOT 51.9 專項配速系統</h3>
-                            <span class="bg-accent-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full">10K Sub-40</span>
+                            <h3 class="font-extrabold text-brand-800 text-sm flex items-center">
+                                <span class="mr-2 text-base">📈</span> VDOT 跑力配速對應系統
+                            </h3>
+                            <span class="bg-accent-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5K 20:00 ➔ 10K Sub-40</span>
                         </div>
                         
                         <div class="overflow-hidden rounded-lg border border-brand-100 mb-4">
@@ -118,40 +122,66 @@
                                     <tr>
                                         <th class="p-2 text-left">等級</th>
                                         <th class="p-2 text-left">跑步類型</th>
-                                        <th class="p-2 text-left">目標配速</th>
+                                        <th class="p-2 text-left">當前配速 (VDOT 49.2)</th>
+                                        <th class="p-2 text-left">目標配速 (VDOT 51.9)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-brand-100 font-mono text-brand-700">
-                                    <tr class="hover:bg-brand-50/50"><td class="p-2 font-bold text-gray-500">E</td><td class="p-2 font-sans text-brand-800">輕鬆跑</td><td class="p-2">5'01" - 5'31" /km</td></tr>
-                                    <tr class="hover:bg-brand-50/50"><td class="p-2 font-bold text-brand-800">M</td><td class="p-2 font-sans text-brand-800">馬拉松配速</td><td class="p-2">4'23" /km</td></tr>
-                                    <tr class="hover:bg-brand-50/50 bg-teal-50/10"><td class="p-2 font-bold text-accent-teal">T</td><td class="p-2 font-sans text-accent-teal">乳酸門檻跑</td><td class="p-2 text-accent-teal font-bold">4'09" /km</td></tr>
-                                    <tr class="hover:bg-brand-50/50 bg-orange-50/10"><td class="p-2 font-bold text-accent-orange">I</td><td class="p-2 font-sans text-accent-orange">最大攝氧跑</td><td class="p-2 text-accent-orange font-bold">3'48" /km</td></tr>
-                                    <tr class="hover:bg-brand-50/50"><td class="p-2 font-bold text-brand-900">R</td><td class="p-2 font-sans text-brand-900">反覆跑</td><td class="p-2">3'31" /km</td></tr>
+                                    <tr class="hover:bg-brand-50/50">
+                                        <td class="p-2 font-bold text-gray-500">E</td>
+                                        <td class="p-2 font-sans text-brand-800">輕鬆跑</td>
+                                        <td class="p-2">5'18" - 5'50" /km</td>
+                                        <td class="p-2">5'01" - 5'31" /km</td>
+                                    </tr>
+                                    <tr class="hover:bg-brand-50/50">
+                                        <td class="p-2 font-bold text-brand-800">M</td>
+                                        <td class="p-2 font-sans text-brand-800">馬拉松配速</td>
+                                        <td class="p-2">4'37" /km</td>
+                                        <td class="p-2">4'23" /km</td>
+                                    </tr>
+                                    <tr class="hover:bg-brand-50/50 bg-teal-50/10">
+                                        <td class="p-2 font-bold text-accent-teal">T</td>
+                                        <td class="p-2 font-sans text-accent-teal">乳酸門檻跑</td>
+                                        <td class="p-2 text-accent-teal">4'21" /km</td>
+                                        <td class="p-2 text-accent-teal font-bold">4'09" /km</td>
+                                    </tr>
+                                    <tr class="hover:bg-brand-50/50 bg-orange-50/10">
+                                        <td class="p-2 font-bold text-accent-orange">I</td>
+                                        <td class="p-2 font-sans text-accent-orange">最大攝氧跑</td>
+                                        <td class="p-2 text-accent-orange">3'59" /km</td>
+                                        <td class="p-2 text-accent-orange font-bold">3'48" /km</td>
+                                    </tr>
+                                    <tr class="hover:bg-brand-50/50">
+                                        <td class="p-2 font-bold text-brand-900">R</td>
+                                        <td class="p-2 font-sans text-brand-900">反覆跑</td>
+                                        <td class="p-2">3'42" /km</td>
+                                        <td class="p-2">3'31" /km</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <!-- Interval Pacing/Time Card (Layout Optimized to prevent wrapping) -->
+                        <!-- Interval Pacing/Time Card -->
                         <div class="bg-brand-50 p-4 rounded-xl border border-brand-200">
                             <h4 class="font-extrabold text-brand-800 text-xs mb-2 border-b border-brand-200 pb-1">
-                                ⏱️ 太湖實測專項距離與配速用時
+                                ⏱️ 太湖實測專項距離用時對比 (當前 ➔ 目標)
                             </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 font-mono text-xs">
+                            <div class="grid grid-cols-1 gap-2 font-mono text-xs">
                                 <div class="flex justify-between items-center px-2 py-1 bg-white rounded border border-brand-100">
                                     <span class="font-sans text-brand-700 font-bold">1000m 間歇 (I)</span>
-                                    <span>配速 3'48" ｜ 單趟: <strong class="text-brand-900 text-sm">3'48"</strong></span>
+                                    <span>當前 3'59" ➔ <strong class="text-accent-orange font-bold">目標 3'48"</strong></span>
                                 </div>
                                 <div class="flex justify-between items-center px-2 py-1 bg-white rounded border border-brand-100">
                                     <span class="font-sans text-brand-700 font-bold">800m 間歇 (I)</span>
-                                    <span>配速 3'48" ｜ 單趟: <strong class="text-brand-900 text-sm">3'02"</strong></span>
+                                    <span>當前 3'11" ➔ <strong class="text-accent-orange font-bold">目標 3'02"</strong></span>
                                 </div>
                                 <div class="flex justify-between items-center px-2 py-1 bg-white rounded border border-brand-100">
                                     <span class="font-sans text-brand-700 font-bold">400m 反覆 (R)</span>
-                                    <span>配速 3'31" ｜ 單趟: <strong class="text-brand-900 text-sm">84"</strong></span>
+                                    <span>當前 88" ➔ <strong class="text-accent-orange font-bold">目標 84"</strong></span>
                                 </div>
-                                <div class="flex justify-between items-center px-2 py-1 bg-brand-100/40 rounded border border-brand-200 sm:col-span-2 lg:col-span-1">
+                                <div class="flex justify-between items-center px-2 py-1 bg-brand-100/40 rounded border border-brand-200">
                                     <span class="font-sans text-brand-700 font-bold">太湖單圈環湖 (2.5K) @ T</span>
-                                    <span>配速 4'09" ｜ 單圈: <strong class="text-brand-900 text-sm">10'22"</strong></span>
+                                    <span>當前 10'52" ➔ <strong class="text-accent-teal font-bold">目標 10'22"</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -187,33 +217,46 @@
                 </div>
             </div>
 
-            <!-- Training Systems Explanation Box -->
+            <!-- Training Systems Explanation Box (Focused on Daniels VDOT & Table 13.1) -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100 space-y-4 text-xs md:text-sm">
-                <h4 class="font-bold text-brand-900 text-sm flex items-center border-b pb-2"><span class="mr-2 text-base">📘</span> 課表設計與訓練系統原理說明</h4>
+                <h4 class="font-bold text-brand-900 text-sm flex items-center border-b pb-2"><span class="mr-2 text-base">📘</span> 丹尼爾斯跑力方程式 (VDOT) 原理與應用</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 leading-relaxed">
                     <div class="space-y-2">
-                        <p class="font-bold text-brand-800 text-xs md:text-sm">💡 丹尼爾斯跑力方程與 Firstbeat 監控理論</p>
+                        <p class="font-bold text-brand-800 text-xs md:text-sm">💡 VDOT 五大強度區間定義</p>
                         <p class="text-[11px] md:text-xs text-brand-600 leading-relaxed">
-                            本計畫採用精密換算之 <strong>VDOT 51.9</strong> 作為唯一配速基準。同時融入了 <strong>Firstbeat 訓練效果 (TE) 模型</strong>，訓練效果結合了強度 (配速與心率飄移) 與持續時間，將其量化為 1.0~5.0 指標。過度維持在低 TE 對提升有氧表現無效；但過度集中於高 TE (4.0~5.0) 則會急劇增加交感神經負荷，導致過度訓練。系統將協助您維持合理的訓練週期平衡。
+                            本計畫採用 Jack Daniels 博士所提出的 <strong>VDOT (跑力值)</strong> 作為唯一的強度基準。VDOT 是一套將最大攝氧量（VO2max）與跑步經濟性相結合的科學指標，它將訓練嚴格劃分為五大強度區間，確保每一次奔跑都有精確的生理適應目標：
                         </p>
+                        <ul class="text-[11px] md:text-xs text-brand-700 space-y-1.5 list-disc pl-4 mt-2">
+                            <li><strong class="text-brand-900">E (Easy 輕鬆跑)</strong>：佔總跑量 70-80%。主要建立心肌搏出量與微血管網密度。</li>
+                            <li><strong class="text-brand-900">M (Marathon 馬拉松)</strong>：模擬長距離賽事體感。</li>
+                            <li><strong class="text-accent-teal">T (Threshold 乳酸門檻跑)</strong>：強度約落於最大心率 88-92%。目的是提高身體清除血液乳酸的速度，延緩疲勞閾值的到來，是提升 10K 巡航均速的最關鍵訓練。</li>
+                            <li><strong class="text-accent-orange">I (Interval 最大攝氧間歇)</strong>：刺激並擴大最大攝氧量 (VO2max) 的天花板，通常以 3-5 分鐘的單趟時間進行。</li>
+                            <li><strong class="text-red-600">R (Repetition 反覆跑)</strong>：極短距離的高強度衝刺，主要目的是改善神經肌肉的徵召效率與「跑步經濟性」。</li>
+                        </ul>
                     </div>
                     <div class="space-y-2">
-                        <p class="font-bold text-brand-800 text-xs md:text-sm">💡 漢森訓練法與單腿深蹲動作防護的融合</p>
+                        <p class="font-bold text-brand-800 text-xs md:text-sm">💡 丹尼爾斯週期化課表設計</p>
                         <p class="text-[11px] md:text-xs text-brand-600 leading-relaxed">
-                            本計畫非純馬拉松選手的偏瘦體型設計，而是專為追求鐵人或雙棲精實體態的運動員打造。針對跑者高頻率單側落地產生的衝擊，本系統結合臨床醫學研究成果：跑步觸地瞬間，下肢骨盆穩定度及膝關節抗內扣剛性（Stiffness）是避免受傷與減少觸地時間的關鍵。我們設計了<strong>「單腿深蹲動作分析器」</strong>，在您執行力量課表的同時，幫您隨時量化動作盲區，維持鐵人般的動力結構。
+                            本 16 週計畫嚴格依據《丹尼爾斯跑步方程式》中 <strong>5-10K 訓練計畫（表13.1）</strong> 精神所編排，並依照 16 週的時長均分為四個階段（每階段 4 週）：
                         </p>
+                        <ul class="text-[11px] md:text-xs text-brand-700 space-y-1.5 list-disc pl-4 mt-2">
+                            <li><strong>階段 1 (基礎建構期)</strong>：以大量 E 跑為主，建立穩固的有氧底盤與抗壓基礎。</li>
+                            <li><strong>階段 2 (速度上限期)</strong>：導入大量 R 配速訓練與基礎 T 配速，建立速度的餘裕度與基本抗乳酸能力。</li>
+                            <li><strong>階段 3 (攝氧乳酸期)</strong>：將火力集中於最痛苦的 I (最大攝氧) 區間與長距離 T 跑。此階段開始 <strong>完全抽離「下肢(肌力)」重訓</strong>，避免干擾高質量課表。</li>
+                            <li><strong>階段 4 (適應減量期)</strong>：維持 T 配速的敏銳度但逐步下降跑量。<strong>比賽當週 (W16) 全面停止所有重訓</strong>，確保肌群肝醣全滿。</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 2: Schedule -->
+        <!-- SECTION 2: Schedule (Daniels 16 Weeks) -->
         <section id="tab-plan" class="tab-content">
             <div class="flex flex-wrap gap-2 mb-4">
-                <button class="phase-btn px-3 py-2 bg-brand-700 text-white rounded-lg text-xs font-bold shadow" onclick="updateSchedule('base', this)">階段 1: 基礎建立 (5/18 - 6/28)</button>
-                <button class="phase-btn px-3 py-2 bg-white text-brand-700 border border-brand-200 rounded-lg text-xs font-bold shadow-xs" onclick="updateSchedule('build', this)">階段 2: 專項強化 (6/29 - 8/9)</button>
-                <button class="phase-btn px-3 py-2 bg-white text-brand-700 border border-brand-200 rounded-lg text-xs font-bold shadow-xs" onclick="updateSchedule('peak', this)">階段 3: 體能巔峰 (8/10 - 8/23)</button>
-                <button class="phase-btn px-3 py-2 bg-white text-brand-700 border border-brand-200 rounded-lg text-xs font-bold shadow-xs" onclick="updateSchedule('taper', this)">階段 4: 賽前減量 (8/24 - 9/06)</button>
+                <button class="phase-btn px-3 py-2 bg-brand-700 text-white rounded-lg text-xs font-bold shadow" onclick="updateSchedule('base', this)">階段 1: 基礎建構 (W1-W4, 5/18-6/28)</button>
+                <button class="phase-btn px-3 py-2 bg-white text-brand-700 border border-brand-200 rounded-lg text-xs font-bold shadow-xs" onclick="updateSchedule('build', this)">階段 2: 速度上限 (W5-W8, 6/29-8/9)</button>
+                <button class="phase-btn px-3 py-2 bg-white text-brand-700 border border-brand-200 rounded-lg text-xs font-bold shadow-xs" onclick="updateSchedule('peak', this)">階段 3: 攝氧乳酸 (W9-W12, 8/10-8/23)</button>
+                <button class="phase-btn px-3 py-2 bg-white text-brand-700 border border-brand-200 rounded-lg text-xs font-bold shadow-xs" onclick="updateSchedule('taper', this)">階段 4: 適應減量 (W13-W16, 8/24-9/6)</button>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-brand-100 overflow-hidden">
@@ -222,9 +265,9 @@
                         <thead class="bg-brand-50 text-brand-700 font-bold border-b border-brand-200">
                             <tr>
                                 <th class="p-3 w-16 align-middle">星期</th>
-                                <th class="p-3 w-32 text-center align-middle">項目</th>
-                                <th class="p-3 align-middle">訓練內容</th>
-                                <th class="p-3 w-52 align-middle">體感與專項目標</th>
+                                <th class="p-3 w-32 text-center align-middle">訓練配速</th>
+                                <th class="p-3 align-middle">丹尼爾斯週期訓練內容</th>
+                                <th class="p-3 w-52 align-middle">重訓指標與專項目標</th>
                                 <th class="p-3 w-28 text-center align-middle">操作</th>
                             </tr>
                         </thead>
@@ -236,110 +279,77 @@
             </div>
         </section>
 
-        <!-- SECTION 3: Strength Training (Excluding SLS Simulator) -->
+        <!-- SECTION 3: Strength Training -->
         <section id="tab-strength" class="tab-content">
             <div class="mb-6 border-b border-brand-200 pb-4">
                 <div class="flex justify-between items-center flex-wrap gap-2">
                     <div>
-                        <h2 class="text-xl font-bold text-brand-800 tracking-tight">🏋️ 鐵人專項重量訓練課表</h2>
-                        <p class="text-brand-600 text-xs italic">針對多關節抗衝擊能力與下肢動力鏈剛性設計的黃金阻力課表，提升推進剛性與跑步經濟性。</p>
+                        <h2 class="text-xl font-bold text-brand-800 tracking-tight">🏋️ 專項重訓系統 (附屬 E 日)</h2>
+                        <p class="text-brand-600 text-xs italic">依據丹尼爾斯課表，重訓將精準安插於低強度的輕鬆跑 (E) 日，並分為四大維度強化動力鏈。</p>
                     </div>
                     <span class="text-xs font-bold text-accent-teal bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
-                        ⚡ 「動力鏈的傳遞始於足底，承載於核心，爆發於推進！」
+                        ⚡ 階段3 (W9起) 停止下肢肌力，比賽週 (W16) 全面停止重訓。
                     </span>
                 </div>
             </div>
 
-            <!-- Existing Strength Splits -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-xs md:text-sm">
+            <!-- Strength Splits -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-xs md:text-sm">
                 <!-- Box 1 -->
-                <div class="bg-white p-5 rounded-xl border-t-4 border-t-accent-teal shadow-md flex flex-col justify-between">
-                    <div class="space-y-4">
-                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
-                            <span>上肢推+硬舉</span>
-                        </h4>
-                        <div class="p-3 bg-brand-50 rounded-lg">
-                            <strong class="text-brand-900 block text-xs font-bold">傳統槓鈴硬舉 (Deadlift)</strong>
-                            <p class="text-brand-700 leading-relaxed mt-1 text-xs">執行 5 組 x 5 次 (75-85% 1RM)。建立下肢後側鏈剛性與脊椎抗彎曲剛性，避免長跑後半程骨盆塌陷，維持穩定前傾。</p>
+                <div class="bg-white p-4 rounded-xl border-t-4 border-t-accent-teal shadow-md flex flex-col">
+                    <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-3">上肢推 (Upper Push)</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">槓鈴/啞鈴臥推 (Bench Press)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">4 組 x 8 次。強化擺臂時的胸椎抗扭轉能力，確保軀幹在高速奔跑中不產生左右晃動代償。</p>
                         </div>
-                        <div class="p-2">
-                            <strong class="text-brand-900 block text-xs font-semibold">槓鈴/啞鈴臥推 (Bench Press)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 組 x 8 次。強化擺臂時的胸椎抗扭轉能力，確保軀幹不晃動。</p>
-                        </div>
-                        <div class="p-2">
-                            <strong class="text-brand-900 block text-xs font-semibold">懸垂舉腿 / 懸吊捲腹</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 3 組 x 15 次。在重力懸吊下建立深層腹直肌抗疲勞能力。</p>
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">啞鈴肩推 (Overhead Press)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">3 組 x 10 次。增強肩帶穩定性與核心垂直支撐剛性。</p>
                         </div>
                     </div>
                 </div>
                 <!-- Box 2 -->
-                <div class="bg-white p-5 rounded-xl border-t-4 border-t-accent-orange shadow-md flex flex-col justify-between">
-                    <div class="space-y-4">
-                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
-                            <span>上肢拉+深蹲</span>
-                        </h4>
-                        <div class="p-3 bg-brand-50 rounded-lg">
-                            <strong class="text-brand-900 block text-xs font-bold">槓鈴深蹲 (Back Squat)</strong>
-                            <p class="text-brand-700 leading-relaxed mt-1 text-xs">執行 4 組 x 8 次。強化股四頭肌與臀大肌，這是跑步觸地時主要的剛性支撐肌群，能縮短觸地時間。</p>
+                <div class="bg-white p-4 rounded-xl border-t-4 border-t-brand-700 shadow-md flex flex-col">
+                    <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-3">上肢拉 (Upper Pull)</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">引體向上 (Pull-up)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">4 組 x 6-8 次。收緊擺臂主要抗阻的背闊肌群，維持長跑後段挺拔姿態，避免駝背導致呼吸效率下降。</p>
                         </div>
-                        <div class="p-2">
-                            <strong class="text-brand-900 block text-xs font-semibold">加重引體向上 (Pull-up)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 組 x 6-8 次。收緊擺臂主要抗阻背肌群，維持挺拔姿態。</p>
-                        </div>
-                        <div class="p-2">
-                            <strong class="text-brand-900 block text-xs font-semibold">負重農夫走路 (Farmer Walk)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 趟 x 40 公尺。強化核心抗扭轉，建立支撐期轉換時的足踝剛性。</p>
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">啞鈴單臂划船 (Dumbbell Row)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">3 組 x 10 次/側。建立單邊背部拉力平衡，輔助身體重心的平穩轉換。</p>
                         </div>
                     </div>
                 </div>
                 <!-- Box 3 -->
-                <div class="bg-white p-5 rounded-xl border-t-4 border-t-brand-800 shadow-md flex flex-col justify-between">
-                    <div class="space-y-4">
-                        <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-1 flex justify-between items-center">
-                            <span>單邊+爆發 (動力重建)</span>
-                        </h4>
-                        <div class="p-3 bg-brand-50 rounded-lg">
-                            <strong class="text-brand-900 block text-xs font-bold">單腿 RDL (Single-Leg RDL)</strong>
-                            <p class="text-brand-700 leading-relaxed mt-1 text-xs">執行 3 組 x 12 次/側。修正跑步左右側動力鏈失衡，輔助骨盆側向水平對齊，強化後鏈肌群。</p>
+                <div class="bg-white p-4 rounded-xl border-t-4 border-t-accent-orange shadow-md flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-100 text-red-600 text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">階段3起停止</div>
+                    <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-3">下肢 (肌力)</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">傳統槓鈴硬舉 (Deadlift)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">5 組 x 5 次 (75-85% 1RM)。建立極致的下肢後側鏈剛性與脊椎抗彎曲剛性，避免骨盆塌陷。</p>
                         </div>
-                        <div class="p-2">
-                            <strong class="text-accent-orange block text-xs font-bold">啞鈴深蹲跳 (Dumbbell Squat Jump)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 4 組 x 10 次。手持輕啞鈴，強調落地的快速離心緩衝與重新蹬伸，提高神經肌肉募集率。</p>
-                        </div>
-                        <div class="p-2">
-                            <strong class="text-brand-900 block text-xs font-semibold">保加利亞單腿蹲 (Bulgarian Squat)</strong>
-                            <p class="text-brand-600 leading-relaxed mt-1 text-xs">執行 3 組 x 12 次/側。建立骨盆與前側動力鏈單邊穩定度，是強化跑步單足支撐能力的金牌動作。</p>
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">槓鈴深蹲 (Back Squat)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">4 組 x 6 次。大幅強化股四頭肌與臀大肌，縮短跑步觸地時間 (GCT)，提升推進力。</p>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Backups Column (備選動作) -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-brand-100 text-xs">
-                <h3 class="font-bold text-brand-800 text-xs md:text-sm mb-3 flex items-center border-b pb-1.5">
-                    <span class="mr-2">♻️</span> 健身房備用動作庫 (自主訓練靈活切換，保持版面飽滿)
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-brand-800">
-                    <div class="p-4 bg-brand-50 rounded-xl border border-brand-100">
-                        <span class="text-accent-teal font-extrabold block text-xs mb-1.5">下肢推力與足踝剛性</span>
-                        <ul class="space-y-1 leading-relaxed text-brand-750">
-                            <li><strong>• 腿推機單腿斜推：</strong>3 組 x 10 次。安全單側大重量負荷，排除下背壓力，專注股四頭肌發力。</li>
-                            <li><strong>• 負重高箱登階：</strong>3 組 x 12 次. 深度鍛鍊臀大肌與骨盆外展肌，模擬高速上坡時的送髖技術。</li>
-                        </ul>
-                    </div>
-                    <div class="p-4 bg-brand-50 rounded-xl border border-brand-100">
-                        <span class="text-accent-orange font-extrabold block text-xs mb-1.5">後側鏈拉力與擺臂穩定</span>
-                        <ul class="space-y-1 leading-relaxed text-brand-750">
-                            <li><strong>• 俯臥器械腿後彎舉：</strong>4 組 x 10 次。專注腿後膕繩肌離心收縮，減少高速奔跑時的膝關節受力負擔。</li>
-                            <li><strong>• 啞鈴單臂支撐划船：</strong>4 組 x 8 次/側。自由背部發力拉扯，強化闊背肌與擺臂核心支座.</li>
-                        </ul>
-                    </div>
-                    <div class="p-4 bg-brand-50 rounded-xl border border-brand-100">
-                        <span class="text-brand-800 font-extrabold block text-xs mb-1.5">單邊核心與平衡備選</span>
-                        <ul class="space-y-1 leading-relaxed text-brand-750">
-                            <li><strong>• 加重單腿臀橋：</strong>3 組 x 15 次。單側臀大肌與臀中肌神經募集，提升單腳觸地期側向骨盆高度。</li>
-                            <li><strong>• 彈力帶側向怪獸走路：</strong>3 組 x 20 步。強化臀中肌，防止落地時股骨內收、膝關節內扣代償。</li>
-                        </ul>
+                <!-- Box 4 -->
+                <div class="bg-white p-4 rounded-xl border-t-4 border-t-brand-900 shadow-md flex flex-col">
+                    <h4 class="font-extrabold text-brand-900 text-sm border-b pb-1.5 mb-3">下肢 (動作控制)</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">保加利亞單腿蹲 (Bulgarian Squat)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">3 組 x 10 次/側。建立骨盆單側動態穩定度，防止落地時股骨內收與膝關節內扣 (Valgus)。</p>
+                        </div>
+                        <div>
+                            <strong class="text-brand-900 block text-xs font-bold">單腿 RDL (Single-Leg RDL)</strong>
+                            <p class="text-brand-700 mt-1 text-xs">3 組 x 12 次/側。高度要求足踝剛性與腿後腱肌群的離心控制，修正左右動力鏈失衡。</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -347,54 +357,73 @@
 
         <!-- SECTION 4: Training Tracker (Offline LocalStorage Engine & OTS monitor) -->
         <section id="tab-track" class="tab-content">
-            <!-- OTS Overtraining Syndrome Monitor Indicator Dashboard -->
-            <div class="bg-white p-5 rounded-2xl border border-brand-100 shadow-sm mb-6">
+            <!-- Training Stats Dashboard (E/M/T/I/R & Mileage) -->
+            <div id="export-area" class="bg-white p-5 rounded-2xl border border-brand-100 shadow-sm mb-6 relative">
+                
                 <div class="flex justify-between items-center border-b pb-3 mb-4">
                     <div>
                         <h3 class="font-extrabold text-brand-900 text-sm flex items-center">
-                            <span class="mr-1.5 text-base">🚨</span> OTS 自律神經與過度訓練監控儀表板
+                            <span class="mr-1.5 text-base">📊</span> 週期跑量與訓練強度分佈統計
                         </h3>
-                        <p class="text-brand-500 text-[11px] mt-0.5">綜合靜息晨脈、TSB (Form) 與近期高負荷 TE 計算，評估中樞神經疲勞風險。</p>
+                        <p class="text-brand-500 text-[11px] mt-0.5">自動追蹤當週、當月里程，並統計 VDOT 五大強度執行的精確次數。</p>
                     </div>
-                    <span id="ots-badge" class="px-3 py-1 text-xs font-bold rounded-full border">計算中...</span>
+                    <!-- EXPORT PDF BUTTON -->
+                    <button onclick="exportToPDF()" class="bg-brand-800 hover:bg-brand-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm transition flex items-center">
+                        <span class="mr-1">📄</span> 匯出報表 (PDF)
+                    </button>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
-                    <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
-                        <span class="text-[10px] text-brand-500 block">晨脈 HRrest 偏移</span>
-                        <div class="flex items-baseline gap-1.5 mt-1">
-                            <strong id="ots-hr-val" class="text-lg font-bold font-mono">--</strong>
-                            <span id="ots-hr-status" class="text-[10px] font-bold"></span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 text-center mb-6">
+                    <!-- Intensities Count -->
+                    <div class="lg:col-span-2 p-3 bg-brand-50 rounded-xl border border-brand-200 flex flex-col justify-center">
+                        <span class="text-[10px] text-brand-500 font-bold block mb-2">VDOT 各強度訓練次數</span>
+                        <div class="flex justify-evenly items-center font-mono text-sm font-bold w-full">
+                            <div class="flex flex-col"><span class="text-gray-500 text-[9px]">E (輕鬆)</span><span id="cnt-e" class="text-brand-700">0</span></div>
+                            <div class="flex flex-col"><span class="text-blue-500 text-[9px]">M (馬拉)</span><span id="cnt-m" class="text-brand-700">0</span></div>
+                            <div class="flex flex-col"><span class="text-teal-600 text-[9px]">T (門檻)</span><span id="cnt-t" class="text-brand-700">0</span></div>
+                            <div class="flex flex-col"><span class="text-orange-500 text-[9px]">I (間歇)</span><span id="cnt-i" class="text-brand-700">0</span></div>
+                            <div class="flex flex-col"><span class="text-red-500 text-[9px]">R (反覆)</span><span id="cnt-r" class="text-brand-700">0</span></div>
+                            <div class="flex flex-col border-l border-brand-200 pl-2"><span class="text-brand-800 text-[9px]">重訓</span><span id="cnt-s" class="text-brand-700">0</span></div>
                         </div>
-                        <p class="text-[10px] text-brand-600 mt-1">較基線漂移 >5 bpm 為交感神經疲勞。</p>
                     </div>
                     
+                    <!-- Mileages -->
                     <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
-                        <span class="text-[10px] text-brand-500 block">7日累積 TE 壓力量化</span>
-                        <div class="flex items-baseline gap-1.5 mt-1">
-                            <strong id="ots-te-val" class="text-lg font-bold font-mono">--</strong>
-                            <span id="ots-te-status" class="text-[10px] font-bold"></span>
-                        </div>
-                        <p class="text-[10px] text-brand-600 mt-1">連續 TE 4.0~5.0 會引發 EPOC 超限壓力。</p>
+                        <span class="text-[10px] text-brand-500 font-bold block">當週跑量 (km)</span>
+                        <strong id="stat-weekly-dist" class="text-2xl text-accent-teal font-mono mt-1 block">0.0</strong>
                     </div>
-
                     <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
-                        <span class="text-[10px] text-brand-500 block">TSB 當前疲勞平衡 (Form)</span>
-                        <div class="flex items-baseline gap-1.5 mt-1">
-                            <strong id="ots-tsb-val" class="text-lg font-bold font-mono">--</strong>
-                            <span id="ots-tsb-status" class="text-[10px] font-bold"></span>
-                        </div>
-                        <p class="text-[10px] text-brand-600 mt-1">Form 值過低 (-10以下) 需穿插 E/恢復課表。</p>
+                        <span class="text-[10px] text-brand-500 font-bold block">當月跑量 (km)</span>
+                        <strong id="stat-monthly-dist" class="text-2xl text-accent-orange font-mono mt-1 block">0.0</strong>
                     </div>
-
                     <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
-                        <span class="text-[10px] text-brand-500 block">OTS 警告判定與恢復建議</span>
-                        <p id="ots-advice" class="text-[11px] text-brand-700 font-bold leading-relaxed mt-1">
-                            請輸入晨脈與今日訓練紀錄，系統將在此顯示具體恢復方針。
-                        </p>
+                        <span class="text-[10px] text-brand-500 font-bold block">總累計跑量 (km)</span>
+                        <strong id="stat-total-dist" class="text-2xl text-brand-800 font-mono mt-1 block">0.0</strong>
                     </div>
                 </div>
-            </div>
+
+                <!-- Log List inside export area -->
+                <div class="bg-brand-50/10 rounded-xl border border-brand-100 overflow-hidden">
+                    <div class="bg-brand-50 p-3 border-b flex justify-between items-center">
+                        <h3 class="font-bold text-brand-800 text-xs">歷史訓練紀錄</h3>
+                        <div class="flex items-center gap-2">
+                            <select id="history-filter" class="bg-white border border-brand-200 text-xs p-1 rounded font-bold outline-none" onchange="renderLogs()">
+                                <option value="all">顯示全部</option>
+                                <option value="E">僅看 E</option>
+                                <option value="M">僅看 M</option>
+                                <option value="T">僅看 T</option>
+                                <option value="I">僅看 I</option>
+                                <option value="R">僅看 R</option>
+                                <option value="Strength">僅看重訓</option>
+                            </select>
+                            <button onclick="clearAllLogs()" class="text-xs text-red-600 hover:underline font-bold hide-on-print">清空</button>
+                        </div>
+                    </div>
+                    <div id="log-list" class="divide-y max-h-[400px] overflow-y-auto p-4 space-y-3">
+                        <!-- Logs dynamically loaded -->
+                    </div>
+                </div>
+            </div> <!-- End of Export Area -->
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <!-- Input Column -->
@@ -402,25 +431,32 @@
                     <div>
                         <h3 id="form-title" class="font-bold text-brand-800 mb-4 flex items-center"><span class="mr-2">📝</span> 紀錄今日訓練</h3>
                         <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-bold text-brand-500 mb-1">訓練類型</label>
-                                <select id="log-type" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none" onchange="suggestDefaultTE()">
-                                    <option value="interval">結構間歇 (Interval) [I/R]</option>
-                                    <option value="tempo">乳酸門檻 (Tempo) [T]</option>
-                                    <option value="lsd">長距離 (LSD) [E]</option>
-                                    <option value="strength">專項重訓 (Strength)</option>
-                                    <option value="easy">主動恢復/E跑</option>
-                                </select>
-                            </div>
-                            
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-xs font-bold text-brand-500 mb-1 font-mono">日期</label>
                                     <input type="date" id="log-date" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-brand-500 mb-1">晨間安靜心率</label>
-                                    <input type="number" id="log-resthr" placeholder="如 52" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs font-mono outline-none">
+                                    <label class="block text-xs font-bold text-brand-500 mb-1">訓練強度 (VDOT)</label>
+                                    <select id="log-type" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none font-bold" onchange="suggestDefaultTE()">
+                                        <option value="E">E (輕鬆跑/長距離)</option>
+                                        <option value="M">M (馬拉松配速)</option>
+                                        <option value="T">T (乳酸門檻)</option>
+                                        <option value="I">I (最大攝氧間歇)</option>
+                                        <option value="R">R (無氧反覆跑)</option>
+                                        <option value="Strength">專項重訓</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-xs font-bold text-brand-500 mb-1">時長(分)</label>
+                                    <input type="number" id="log-duration" value="45" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs font-mono outline-none" oninput="calculateTEFromRPE()">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-bold text-brand-500 mb-1">單次距離 (km)</label>
+                                    <input type="number" id="log-distance" step="0.1" placeholder="輸入公里數..." class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs font-mono outline-none text-accent-teal font-bold">
                                 </div>
                             </div>
 
@@ -429,15 +465,15 @@
                                     <label class="block text-xs font-bold text-brand-500 mb-1">運動體感 RPE</label>
                                     <select id="log-rpe" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none" onchange="calculateTEFromRPE()">
                                         <option value="2">2: 非常輕鬆 (Dynamic)</option>
-                                        <option value="4">4: 有點累 (Easy E)</option>
-                                        <option value="6" selected>6: 中等強度 (M/T)</option>
+                                        <option value="4" selected>4: 有點累 (Easy E)</option>
+                                        <option value="6">6: 中等強度 (M/T)</option>
                                         <option value="8">8: 很辛苦 (Interval I)</option>
                                         <option value="10">10: 極度精疲力竭 (R)</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-brand-500 mb-1">訓練時長 (分鐘)</label>
-                                    <input type="number" id="log-duration" value="45" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs font-mono outline-none" oninput="calculateTEFromRPE()">
+                                    <label class="block text-xs font-bold text-brand-500 mb-1">晨間安靜心率</label>
+                                    <input type="number" id="log-resthr" placeholder="如 52" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs font-mono outline-none">
                                 </div>
                             </div>
 
@@ -448,28 +484,16 @@
                                     <button onclick="calculateTEFromRPE(true)" class="text-[10px] bg-accent-teal text-white px-1.5 py-0.5 rounded font-bold">手動精算</button>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <input type="number" id="log-te" step="0.1" min="1.0" max="5.0" value="3.5" class="w-20 bg-white border border-brand-200 rounded p-1.5 text-xs text-center font-mono font-bold outline-none">
+                                    <input type="number" id="log-te" step="0.1" min="1.0" max="5.0" value="2.5" class="w-20 bg-white border border-brand-200 rounded p-1.5 text-xs text-center font-mono font-bold outline-none">
                                     <div class="flex-grow">
-                                        <span id="log-te-desc" class="text-[11px] font-bold text-accent-orange">3.5: 提升體能效果</span>
+                                        <span id="log-te-desc" class="text-[11px] font-bold text-green-600">2.5: 恢復並維持體能</span>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- File Upload Box inside Day Record -->
-                            <div>
-                                <label class="block text-xs font-bold text-brand-500 mb-1">上傳跑錶截圖/動作紀錄 (本地儲存)</label>
-                                <div class="flex items-center gap-2">
-                                    <input type="file" id="log-img" accept="image/*" class="text-[10px] flex-grow">
-                                </div>
-                                <!-- Image preview loaded dynamically -->
-                                <div class="mt-2 relative">
-                                    <img id="image-preview-thumbnail" class="hidden max-h-24 rounded object-cover border border-brand-200 shadow-xs" src="" alt="preview">
-                                    <button id="remove-preview-btn" onclick="removeUploadedImage()" class="hidden absolute top-1 left-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs shadow-md">×</button>
-                                </div>
-                            </div>
                             <div>
                                 <label class="block text-xs font-bold text-brand-500 mb-1">訓練與感受日誌</label>
-                                <textarea id="log-notes" rows="3" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none" placeholder="今天太湖東側長直道逆風強勁，單腳觸地剛性良好，最後一趟心率來到172..."></textarea>
+                                <textarea id="log-notes" rows="3" class="w-full bg-brand-50 border border-brand-200 rounded p-2 text-xs outline-none" placeholder="今天太湖東側長直道逆風強勁，單腳觸地剛性良好..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -479,44 +503,53 @@
                     </div>
                 </div>
 
-                <!-- History & Stats Column -->
+                <!-- OTS Column -->
                 <div class="lg:col-span-8 space-y-6">
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-[11px] font-bold text-brand-400">間歇次數 (I/R)</span>
-                            <strong id="stat-interval" class="text-xl text-accent-orange font-mono">0</strong>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-[11px] font-bold text-brand-400">門檻次數 (T)</span>
-                            <strong id="stat-tempo" class="text-xl text-accent-teal font-mono">0</strong>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-[11px] font-bold text-brand-400">LSD / 主動恢復</span>
-                            <strong id="stat-lsd" class="text-xl text-brand-600 font-mono">0</strong>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl border border-brand-100 text-center shadow-sm">
-                            <span class="block text-[11px] font-bold text-brand-400">專項重訓 / SLS 檢測</span>
-                            <strong id="stat-strength" class="text-xl text-brand-800 font-mono">0</strong>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-brand-100 overflow-hidden">
-                        <div class="bg-brand-50 p-4 border-b flex justify-between items-center flex-wrap gap-2">
-                            <h3 class="font-bold text-brand-800 text-sm">歷史訓練紀錄 & SLS 檢測日誌</h3>
-                            
-                            <div class="flex items-center gap-2">
-                                <select id="history-filter" class="bg-white border text-xs p-1 rounded font-bold" onchange="renderLogs()">
-                                    <option value="all">顯示全部</option>
-                                    <option value="interval">僅看間歇 (I/R)</option>
-                                    <option value="tempo">僅看門檻 (T)</option>
-                                    <option value="strength">僅看重訓/SLS</option>
-                                </select>
-                                <button onclick="clearAllLogs()" class="text-xs text-red-600 hover:underline font-bold">清空全部</button>
+                    <div class="bg-white p-5 rounded-2xl border border-brand-100 shadow-sm">
+                        <div class="flex justify-between items-center border-b pb-3 mb-4">
+                            <div>
+                                <h3 class="font-extrabold text-brand-900 text-sm flex items-center">
+                                    <span class="mr-1.5 text-base">🚨</span> OTS 自律神經與過度訓練監控儀表板
+                                </h3>
+                                <p class="text-brand-500 text-[11px] mt-0.5">綜合靜息晨脈、TSB (Form) 與近期高負荷 TE 計算，評估中樞神經疲勞風險。</p>
                             </div>
+                            <span id="ots-badge" class="px-3 py-1 text-xs font-bold rounded-full border">計算中...</span>
                         </div>
-                        <div id="log-list" class="divide-y max-h-[520px] overflow-y-auto p-4 space-y-3 bg-brand-50/10">
-                            <!-- Logs dynamically loaded from LocalStorage -->
-                            <p id="empty-message" class="p-8 text-center text-brand-400 text-sm italic leading-relaxed">目前無紀錄。請從左側上傳數據截圖或手動輸入今天太湖或健身房的訓練心得，開始記錄 2026 課表進度！</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                            <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
+                                <span class="text-[10px] text-brand-500 block">晨脈 HRrest 偏移</span>
+                                <div class="flex items-baseline gap-1.5 mt-1">
+                                    <strong id="ots-hr-val" class="text-lg font-bold font-mono">--</strong>
+                                    <span id="ots-hr-status" class="text-[10px] font-bold"></span>
+                                </div>
+                                <p class="text-[10px] text-brand-600 mt-1">較基線漂移 >5 bpm 為交感神經疲勞。</p>
+                            </div>
+                            
+                            <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
+                                <span class="text-[10px] text-brand-500 block">7日累積 TE 壓力量化</span>
+                                <div class="flex items-baseline gap-1.5 mt-1">
+                                    <strong id="ots-te-val" class="text-lg font-bold font-mono">--</strong>
+                                    <span id="ots-te-status" class="text-[10px] font-bold"></span>
+                                </div>
+                                <p class="text-[10px] text-brand-600 mt-1">連續 TE 4.0~5.0 會引發 EPOC 超限壓力。</p>
+                            </div>
+
+                            <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
+                                <span class="text-[10px] text-brand-500 block">TSB 當前疲勞平衡 (Form)</span>
+                                <div class="flex items-baseline gap-1.5 mt-1">
+                                    <strong id="ots-tsb-val" class="text-lg font-bold font-mono">--</strong>
+                                    <span id="ots-tsb-status" class="text-[10px] font-bold"></span>
+                                </div>
+                                <p class="text-[10px] text-brand-600 mt-1">Form 值過低 (-10以下) 需穿插 E/恢復課表。</p>
+                            </div>
+
+                            <div class="p-3 bg-brand-50 rounded-xl border border-brand-200">
+                                <span class="text-[10px] text-brand-500 block">OTS 警告判定與恢復建議</span>
+                                <p id="ots-advice" class="text-[11px] text-brand-700 font-bold leading-relaxed mt-1">
+                                    請輸入晨脈與今日訓練紀錄，系統將在此顯示具體恢復方針。
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -537,7 +570,7 @@
                 </div>
             </div>
 
-            <!-- SLS 3D Movement Analysis Simulator based on the PMC paper findings -->
+            <!-- SLS 3D Movement Analysis Simulator -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
                 <!-- SLS Simulator Visualizer Panel -->
                 <div class="lg:col-span-7 bg-white p-5 rounded-xl border border-brand-100 shadow-sm flex flex-col justify-between">
@@ -702,13 +735,14 @@
         </div>
     </div>
 
-    <!-- Image View Lightbox Modal -->
-    <div id="image-view-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="closeImageViewModal()">
-        <img id="image-view-target" class="max-w-full max-h-full rounded-lg shadow-2xl border border-white" src="" alt="Full view">
+    <!-- Exporting Overlay -->
+    <div id="pdf-overlay" class="hidden fixed inset-0 bg-brand-900/80 z-[100] flex flex-col items-center justify-center text-white">
+        <div class="animate-spin text-4xl mb-4">⚙️</div>
+        <p class="font-bold tracking-wider">正在產生精美 PDF 報表...</p>
     </div>
 
     <footer class="bg-brand-900 text-brand-200 py-6 px-6 text-center text-xs mt-auto">
-        <p>© 2026 太湖 Sub-40 備賽與監控系統 V6 ｜ 金門金湖訓練基地 ｜ 專項 3D SLS 臨床動作防護</p>
+        <p>© 2026 太湖 Sub-40 備賽與監控系統 V6 ｜ 金門金湖訓練基地 ｜ 丹尼爾斯週期化</p>
     </footer>
 
     <script>
@@ -717,7 +751,6 @@
         
         let trainingLogs = [];
         let editIndex = -1;
-        let uploadedImageBase64 = null;
         let pendingDeleteIndex = -1;
         
         // Dynamic Chart instance variable
@@ -731,42 +764,143 @@
             baselineRestHr: 52
         };
 
+        // 導入 Daniels 16 週邏輯 (Table 13.1縮編版)：
+        // - Phase 1: 基礎建立 W1-W4
+        // - Phase 2: 速度上限 (R+T) W5-W8
+        // - Phase 3: 攝氧乳酸 (I+T) W9-W12
+        // - Phase 4: 最終質量與減量 W13-W16
         const schedules = {
-            base: [
-                { d: "一", t: "上肢推+硬舉", c: "傳統槓鈴硬舉 (5x5) + 臥推與核心懸垂舉腿", g: "全身張力建立與擺臂擺幅穩定" },
-                { d: "二", t: "輕鬆跑 (E)", c: "太湖 2 圈 (5.0 km) E配速輕鬆巡航跑 (目標 5'01\" - 5'31\")", g: "有氧微血管網與心肌排量建立" },
-                { d: "三", t: "上肢拉+深蹲", c: "槓鈴深蹲 (4x8) + 引體向上與農夫走路", g: "下肢主驅動剛性與核心骨盆穩固力累積" },
-                { d: "四", t: "速度間歇 (I/R)", c: "太湖直線段 400m x 10 趟 (目標 84\" / 400m，趟間恢復走跑)", g: "神經速度募集效率與觸地回彈感激活" },
-                { d: "五", t: "單邊+爆發", c: "單腿 RDL (3x12) + 啞鈴深蹲跳 (4x10) + 保加利亞蹲", g: "單側鏈失衡修正，防護足踝與膝關節" },
-                { d: "六", t: "長距離 (LSD)", c: "太湖 5 圈 (12.5 km) 全輕鬆配速航行 (E配速)", g: "持久有氧基礎累積與脂肪能量代謝率提升" },
-                { d: "日", t: "交叉訓練", c: "單車 90 分鐘 (控制於儲備心率 Zone 2 範圍)", g: "主動有氧循環代謝排酸，跑步肌群關節休息" }
+            base: [ 
+                { w: 1, d: "一", t: "E跑 + 上肢推", c: "30 分鐘 E配速 + 槓鈴臥推/肩推", g: "建立上肢與軀幹前側抗扭剛性" },
+                { w: 1, d: "二", t: "E跑 + 短衝刺", c: "40 分鐘 E配速 + 6x10秒 短衝刺 (ST)", g: "輕量喚醒神經肌肉徵召" },
+                { w: 1, d: "三", t: "E跑 + 下肢(肌力)", c: "30 分鐘 E配速 + 傳統硬舉/深蹲 (大重量)", g: "微血管網生長，建立下肢絕對剛性" },
+                { w: 1, d: "四", t: "E跑 + 上肢拉", c: "40 分鐘 E配速 + 引體向上/單臂划船", g: "背闊肌力量建立，穩定擺臂支點" },
+                { w: 1, d: "五", t: "E跑 + 短衝刺", c: "40 分鐘 E配速 + 6x10秒 短衝刺 (ST)", g: "輕量喚醒神經肌肉徵召" },
+                { w: 1, d: "六", t: "E跑+下肢(動作控制)", c: "40 分鐘 E配速 + 保加利亞單腿蹲/單腿RDL", g: "單腳落地骨盆穩定度強化，防外翻" },
+                { w: 1, d: "日", t: "L長跑 (25%)", c: "60 分鐘 E配速輕鬆跑", g: "建立基礎有氧與心肌排量" },
+
+                { w: 2, d: "一", t: "E跑 + 上肢推", c: "35 分鐘 E配速 + 槓鈴臥推/肩推", g: "維持上肢重訓頻率" },
+                { w: 2, d: "二", t: "E跑 + 短衝刺", c: "45 分鐘 E配速 + 6x10秒 短衝刺 (ST)", g: "提升基礎跑步經濟性" },
+                { w: 2, d: "三", t: "E跑 + 下肢(肌力)", c: "35 分鐘 E配速 + 傳統硬舉/深蹲 (大重量)", g: "加強下肢觸地剛性 (Stiffness)" },
+                { w: 2, d: "四", t: "E跑 + 上肢拉", c: "45 分鐘 E配速 + 引體向上/單臂划船", g: "背部力量穩定" },
+                { w: 2, d: "五", t: "E跑 + 短衝刺", c: "45 分鐘 E配速 + 6x10秒 短衝刺 (ST)", g: "神經活化" },
+                { w: 2, d: "六", t: "E跑+下肢(動作控制)", c: "45 分鐘 E配速 + 保加利亞單腿蹲", g: "側向與旋轉穩定性訓練" },
+                { w: 2, d: "日", t: "L長跑 (25%)", c: "75 分鐘 E配速輕鬆跑", g: "逐步增加微血管密度" },
+
+                { w: 3, d: "一", t: "E跑 + 上肢推", c: "40 分鐘 E配速 + 槓鈴臥推/肩推", g: "穩定胸椎張力" },
+                { w: 3, d: "二", t: "E跑 + 短衝刺", c: "50 分鐘 E配速 + 8x10秒 短衝刺 (ST)", g: "增加無氧神經徵召時間" },
+                { w: 3, d: "三", t: "E跑 + 下肢(肌力)", c: "40 分鐘 E配速 + 傳統硬舉 (5x5)", g: "最大負荷刺激，建立最高肌肉張力" },
+                { w: 3, d: "四", t: "E跑 + 上肢拉", c: "50 分鐘 E配速 + 負重引體向上", g: "強化擺臂代償防護" },
+                { w: 3, d: "五", t: "E跑 + 短衝刺", c: "50 分鐘 E配速 + 8x10秒 短衝刺 (ST)", g: "持續維持快縮肌活性" },
+                { w: 3, d: "六", t: "E跑+下肢(動作控制)", c: "50 分鐘 E配速 + 單腿RDL", g: "左右動力鏈平衡調校" },
+                { w: 3, d: "日", t: "L長跑 (25%)", c: "90 分鐘 E配速輕鬆跑 (最大基礎容量)", g: "脂肪代謝系統適應" },
+
+                { w: 4, d: "一", t: "E跑 + 上肢推", c: "30 分鐘 E配速 + 輕量臥推", g: "動態恢復與血液循環" },
+                { w: 4, d: "二", t: "E跑 + 短衝刺", c: "30 分鐘 E配速 + 4x10秒 短衝刺 (ST)", g: "微持肌肉彈性不僵硬" },
+                { w: 4, d: "三", t: "E跑 + 下肢(肌力)", c: "30 分鐘 E配速 + 輕量深蹲 (60% 1RM)", g: "減低神經負荷，維持關節活動度" },
+                { w: 4, d: "四", t: "E跑 + 上肢拉", c: "30 分鐘 E配速 + 輕量划船", g: "背部筋膜放鬆" },
+                { w: 4, d: "五", t: "E跑 + 短衝刺", c: "30 分鐘 E配速 + 4x10秒 短衝刺 (ST)", g: "準備迎接階段二質量期" },
+                { w: 4, d: "六", t: "E跑+下肢(動作控制)", c: "30 分鐘 E配速 + 無負重單腿動作", g: "關節韌帶舒緩修復" },
+                { w: 4, d: "日", t: "L長跑 (減量恢復)", c: "60 分鐘 E配速輕鬆跑", g: "吸收前三週訓練壓力，超補償" }
             ],
-            build: [
-                { d: "一", t: "上肢推+硬舉", c: "傳統硬舉 (5RM 力量堆疊) + 臥推/肩推大重量挑戰", g: "脊椎抗彎曲剛性再強化，穩固高速支撐" },
-                { d: "二", t: "結構間歇 (I)", c: "太湖直線段 800m x 6 趟 (目標 3'02\" / 800m，趟間慢跑3')", g: "強高攝氧容量開發，激發有氧端高強度氧債" },
-                { d: "三", t: "上肢拉+深蹲", c: "深蹲 (下蹲離心控制 3\" 加深刺激) + 槓鈴劃船", g: "肌纖維神經元活化，建立大重量承受剛性" },
-                { d: "四", t: "乳酸門檻 (T)", c: "太湖 3 圈 (7.5 km) 穩配乳酸閾值 (目標 4'09\"/km)", g: "提高耐乳酸與排乳酸效率，鎖定高巡航均速" },
-                { d: "五", t: "單邊+爆發", c: "單腿 RDL + 保加利亞單腿蹲 (負重提升) + 啞鈴深蹲跳", g: "骨盆單側動態旋轉抗力，預防髕骨代償受傷" },
-                { d: "六", t: "長距離 (LSD)", c: "太湖 6 圈 (15.0 km) 前 5 圈 E，最後 1 圈拉至 4'09\"/km", g: "專項耐力轉換堆疊，模擬後程身體力學疲勞" },
-                { d: "日", t: "交叉訓練", c: "單車 120 分鐘或輕鬆游泳 60 分鐘", g: "交叉心肺運作，軟組織與神經疲勞清除修復" }
+            build: [ // 速度上限 (R為主, T為輔) W5-W8
+                { w: 5, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 5, d: "二", t: "Q2", c: "3.2公里E + 2×[8×(200公尺R + 200公尺慢跑) + 800公尺慢跑] + 3.2公里E", g: "無重訓" },
+                { w: 5, d: "三", t: "E跑", c: "E日 + 8 ST", g: "下肢(肌力)" },
+                { w: 5, d: "四", t: "E跑", c: "E日", g: "上肢拉" },
+                { w: 5, d: "五", t: "Q3", c: "3.2公里E + 4×(200公尺R + 200公尺慢跑) + 2×(1.6公里T + 1分鐘休息) + 4×(200公尺R + 200公尺慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 5, d: "六", t: "E跑", c: "E日 + 8 ST", g: "下肢(動作控制)" },
+                { w: 5, d: "日", t: "Q1", c: "L長跑：最少要達週跑量的 25%，或是連續跑 120 分鐘，看何者先達到就停止練習", g: "無重訓" },
+
+                { w: 6, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 6, d: "二", t: "Q2", c: "3.2公里E + 4×(200公尺R + 200公尺慢跑 + 200公尺R + 200公尺慢跑 + 400公尺R + 400公尺慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 6, d: "三", t: "E跑", c: "E日 + 8 ST", g: "下肢(肌力)" },
+                { w: 6, d: "四", t: "E跑", c: "E日", g: "上肢拉" },
+                { w: 6, d: "五", t: "Q3", c: "3.2公里E + 3×(1.6公里T + 1分鐘休息) + 6×(200公尺R + 200公尺慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 6, d: "六", t: "E跑", c: "E日 + 8 ST", g: "下肢(動作控制)" },
+                { w: 6, d: "日", t: "Q1", c: "L長跑：最少要達週跑量的 25%，或是連續跑 120 分鐘，看何者先達到就停止練習", g: "無重訓" },
+
+                { w: 7, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 7, d: "二", t: "Q2", c: "3.2公里E + 4×(200公尺R + 200公尺慢跑) + 4×(400公尺R + 400公尺慢跑) + 4×(200公尺R + 200公尺慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 7, d: "三", t: "E跑", c: "E日 + 8 ST", g: "下肢(肌力)" },
+                { w: 7, d: "四", t: "E跑", c: "E日", g: "上肢拉" },
+                { w: 7, d: "五", t: "Q3", c: "3.2公里E + 7×(2分鐘H + 1分鐘慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 7, d: "六", t: "E跑", c: "E日 + 8 ST", g: "下肢(動作控制)" },
+                { w: 7, d: "日", t: "Q1", c: "1.6公里E + 14.4公里M + 6 ST", g: "無重訓" },
+
+                { w: 8, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 8, d: "二", t: "Q2", c: "3.2公里E + 4×(400公尺R + 400公尺慢跑) + 1.6公里E + 4×(400公尺R + 400公尺慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 8, d: "三", t: "E跑", c: "E日 + 8 ST", g: "下肢(肌力)" },
+                { w: 8, d: "四", t: "E跑", c: "E日", g: "上肢拉" },
+                { w: 8, d: "五", t: "Q3", c: "3.2公里E + 4×(200公尺R + 200公尺慢跑) + 4.8公里T + 4×(200公尺R + 200公尺慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 8, d: "六", t: "E跑", c: "E日 + 8 ST", g: "下肢(動作控制)" },
+                { w: 8, d: "日", t: "Q1", c: "L長跑：最少要達週跑量的 25%，或是連續跑 120 分鐘，看何者先達到就停止練習", g: "無重訓" }
             ],
-            peak: [
-                { d: "一", t: "上肢推+硬舉", c: "硬舉/深蹲 (3-5RM 高負荷刺激) + 引體向上/臥推", g: "賽前神經最上限募集，激活最高等級肌肉剛性" },
-                { d: "二", t: "速度間歇 (R)", c: "太湖直線 400m x 12 趟 (單趟極致目標 82\"，趟間全休3')", g: "開發無氧高儲備功率，刺激快縮肌募集效率" },
-                { d: "三", t: "輕鬆跑 (E)", c: "太湖 2 圈 (5.0 km) E配速極慢放鬆跑 (目標 5'30\" 配速)", g: "消除前日無氧乳酸債，活化肌肉微血管網恢復" },
-                { d: "四", t: "配速實測 (P)", c: "太湖 4 圈 (10.0 km) 穩配目標配速 (目標 3'59\"/km)", g: "Sub-40 實戰定速體感鎖定，掌握太湖環湖節奏" },
-                { d: "五", t: "單邊+爆發", c: "加重單腿臀橋 + 單腿 RDL + 動態核心抗扭轉", g: "最後步態對齊活化，調校臀大肌動態發力" },
-                { d: "六", t: "最高里程", c: "太湖 7 圈 (17.5 km) 穩定配速巡航跑", g: "終極耐力天花板堆疊，建立最厚實備賽信心" },
-                { d: "日", t: "完全休養", c: "高品質睡眠與按摩放鬆 + 全天完全休息", g: "排除體內皮質醇累積，拉高恢復基線" }
+            peak: [ // 攝氧乳酸 (I為主, T為輔) W9-W12 - 停止下肢(肌力)
+                { w: 9, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 9, d: "二", t: "E跑", c: "E日", g: "無重訓 (階段3停止下肢肌力)" },
+                { w: 9, d: "三", t: "Q2", c: "3.2公里E + 4×(1200公尺I + 3分鐘慢跑) + 3.2公里E", g: "無重訓" },
+                { w: 9, d: "四", t: "Q3", c: "3.2公里E + 4×(1.6公里T + 1分鐘休息) + 3.2公里E", g: "無重訓" },
+                { w: 9, d: "五", t: "E跑", c: "E日 + 8 ST", g: "上肢拉" },
+                { w: 9, d: "六", t: "E跑", c: "E日 + 6 ST", g: "下肢(動作控制)" },
+                { w: 9, d: "日", t: "Q1", c: "L長跑：最少要達週跑量的 25%，或是連續跑 120 分鐘，看何者先達到就停止練習", g: "無重訓" },
+
+                { w: 10, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 10, d: "二", t: "Q2", c: "E日 + 8 ST", g: "無重訓" },
+                { w: 10, d: "三", t: "E跑", c: "3.2公里E + 5×(1,000公尺I + 400公尺慢跑) + 3.2公里E", g: "無重訓 (階段3停止下肢肌力)" },
+                { w: 10, d: "四", t: "E跑", c: "3.2公里E + 4.8公里T + 4×(200公尺R + 200公尺慢跑) + 3.2公里E", g: "上肢拉" },
+                { w: 10, d: "五", t: "Q3", c: "E日", g: "無重訓" },
+                { w: 10, d: "六", t: "E跑", c: "E日 + 8 ST", g: "下肢(動作控制)" },
+                { w: 10, d: "日", t: "Q1", c: "1.6公里E + 16公里M + 4 ST", g: "無重訓" },
+
+                { w: 11, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 11, d: "二", t: "Q2", c: "E日 + 8 ST", g: "無重訓" },
+                { w: 11, d: "三", t: "E跑", c: "3.2公里E + 6×(800公尺I + 400公尺慢跑) + 3.2公里E", g: "無重訓 (階段3停止下肢肌力)" },
+                { w: 11, d: "四", t: "E跑", c: "3.2公里E + 5×(1.6公里T + 1分鐘休息) + 6 ST + 1.6公里E", g: "上肢拉" },
+                { w: 11, d: "五", t: "Q3", c: "E日", g: "無重訓" },
+                { w: 11, d: "六", t: "E跑", c: "E日 + 8 ST", g: "下肢(動作控制)" },
+                { w: 11, d: "日", t: "Q1", c: "L長跑：最少要達週跑量的 25%，或是連續跑 120 分鐘，看何者先達到就停止練習", g: "無重訓" },
+
+                { w: 12, d: "一", t: "E跑", c: "E日 + 10 ST", g: "上肢推" },
+                { w: 12, d: "二", t: "Q2", c: "E日 + 8 ST", g: "無重訓" },
+                { w: 12, d: "三", t: "E跑", c: "3.2公里E + 4×(1,200公尺I + 3分鐘慢跑) + 3.2公里E", g: "無重訓 (階段3停止下肢肌力)" },
+                { w: 12, d: "四", t: "E跑", c: "3.2公里E + 1.6公里T + 2分鐘休息 + 3.2公里T + 1分鐘休息 + 1.6公里T + 4×(200公尺R + 200公尺慢跑) + 1.6公里E", g: "上肢拉" },
+                { w: 12, d: "五", t: "Q3", c: "E日", g: "無重訓" },
+                { w: 12, d: "六", t: "E跑", c: "E日 + 8 ST", g: "下肢(動作控制)" },
+                { w: 12, d: "日", t: "Q1", c: "1.6公里E + 8公里M + 1.6公里E + 8公里M", g: "無重訓" }
             ],
-            taper: [
-                { d: "一", t: "肌肉張力喚醒", c: "保加利亞單腿蹲 + 核心穩定 (訓練容量減半)", g: "維持中樞動能張力，防止關節與肌群產生遲鈍" },
-                { d: "二", t: "速度間歇 (I)", c: "太湖 1000m x 3 趟 (目標 3'48\" / 1000m，趟間走跑4')", g: "維持高攝氧通路活性，細胞燃料系統激活" },
-                { d: "三", t: "輕鬆跑 (E)", c: "太湖 1 圈 (2.5 km) 極慢速度輕鬆放跑", g: "徹底清除深層組織疲勞，重建肌肝醣蓄積" },
-                { d: "四", t: "目標配速模擬", c: "3.0 km 穩配 3'59\" 體感跑 + 短衝刺 3 趟", g: "配速信心定格，消除多餘賽前心理壓力" },
-                { d: "五", t: "能量儲存", c: "全天休息 + 積極超補高複合碳水化合物", g: "填滿肌肝醣能儲，為賽前創造最飽滿油箱" },
-                { d: "六", t: "賽前喚醒", c: "15 分鐘慢跑 + 衝刺 3 趟 (熱身落於賽事速度)", g: "引爆肌肉神經元興奮感，調整最佳起跑狀態" },
-                { d: "日", t: "🎯 驗收日", c: "9/6 當天：Panasonic Run 12.5K 賽事 (目標 Sub-50 完賽)", g: "實現 10k Sub-40 破 PB 完賽！" }
+            taper: [ // 最終質量與減量 (T為主) W13-W16 - W16 無重訓
+                { w: 13, d: "一", t: "E跑", c: "E日 + 6 ST", g: "上肢推" },
+                { w: 13, d: "二", t: "Q2", c: "3.2公里E + 5×(1.6公里T + 1分鐘休息) + 3.2公里E", g: "無重訓" },
+                { w: 13, d: "三", t: "E跑", c: "E日", g: "無重訓" },
+                { w: 13, d: "四", t: "E跑", c: "E日", g: "上肢拉" },
+                { w: 13, d: "五", t: "Q3", c: "3.2公里E + 6×(1,000公尺I + 400公尺慢跑) + 1.6公里E", g: "無重訓" },
+                { w: 13, d: "六", t: "E跑", c: "E日", g: "下肢(動作控制)" },
+                { w: 13, d: "日", t: "Q1", c: "L長跑：最少要達週跑量的 25%，或是連續跑 120 分鐘，看何者先達到就停止練習", g: "無重訓" },
+
+                { w: 14, d: "一", t: "E跑", c: "E日 + 6 ST", g: "上肢推" },
+                { w: 14, d: "二", t: "Q2", c: "4.8公里T + 3.2公里E", g: "無重訓" },
+                { w: 14, d: "三", t: "E跑", c: "E日", g: "無重訓" },
+                { w: 14, d: "四", t: "E跑", c: "E日", g: "上肢拉" },
+                { w: 14, d: "五", t: "Q3", c: "5×(1,200公尺I + 3分鐘慢跑) + 1.6公里E", g: "無重訓" },
+                { w: 14, d: "六", t: "E跑", c: "E日", g: "下肢(動作控制)" },
+                { w: 14, d: "日", t: "Q1", c: "L長跑：最少要達週跑量的 25%，或是連續跑 120 分鐘，看何者先達到就停止練習", g: "無重訓" },
+
+                { w: 15, d: "一", t: "E跑", c: "E日 + 6 ST", g: "上肢推" },
+                { w: 15, d: "二", t: "Q2", c: "5×(1.6公里+1分鐘休息) + 3.2公里E", g: "無重訓" },
+                { w: 15, d: "三", t: "E跑", c: "E日", g: "無重訓" },
+                { w: 15, d: "四", t: "E跑", c: "E日", g: "上肢拉" },
+                { w: 15, d: "五", t: "Q3", c: "6×(1,000公尺I + 400公尺慢跑) + 1.6公里E", g: "無重訓" },
+                { w: 15, d: "六", t: "E跑", c: "E日", g: "下肢(動作控制)" },
+                { w: 15, d: "日", t: "Q1", c: "L長跑降到90分鐘", g: "無重訓" },
+
+                { w: 16, d: "一", t: "E跑", c: "E日 + 6 ST", g: "無重訓 (比賽週全面停止)" },
+                { w: 16, d: "二", t: "Q2", c: "3×(1.6公里T + 2分鐘休息) + 1.6公里E", g: "無重訓" },
+                { w: 16, d: "三", t: "E跑", c: "E日", g: "無重訓" },
+                { w: 16, d: "四", t: "E跑", c: "E日", g: "無重訓" },
+                { w: 16, d: "五", t: "E跑", c: "E日", g: "無重訓" },
+                { w: 16, d: "六", t: "E跑", c: "E日 + 6 ST", g: "無重訓" },
+                { w: 16, d: "日", t: "🎯 驗收日", c: "9/6 當天：Panasonic Run 12.5K", g: "無重訓" }
             ]
         };
 
@@ -789,7 +923,6 @@
             document.getElementById('prof-activity').value = runnerProfile.activityClass || 8;
             document.getElementById('prof-resthr').value = runnerProfile.baselineRestHr || 52;
             
-            // Sync with log resting heart rate default placeholder
             document.getElementById('log-resthr').placeholder = `基準: ${runnerProfile.baselineRestHr}`;
         }
 
@@ -802,32 +935,25 @@
             };
             localStorage.setItem(PROFILE_KEY, JSON.stringify(runnerProfile));
             
-            // Re-render resting HR hints and refresh TSB charts
             document.getElementById('log-resthr').placeholder = `基準: ${runnerProfile.baselineRestHr}`;
             calculateTEFromRPE();
             initCharts();
             updateOTSReport();
-            
-            // Highlight Slogan
             showStatusToast("🎯 個人常數與監控基線更新成功！");
         }
 
-        // Custom toast logic for feedback within iFrame
         function showStatusToast(msg) {
             const toast = document.createElement('div');
             toast.className = 'fixed bottom-4 right-4 bg-brand-800 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-2xl z-50 transition-all duration-300 transform translate-y-2 opacity-0';
             toast.innerText = msg;
             document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.remove('translate-y-2', 'opacity-0');
-            }, 50);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 50);
             setTimeout(() => {
                 toast.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 2500);
         }
 
-        // --- NAVIGATION & TABS ---
         function switchTab(tabId, el) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
@@ -835,22 +961,32 @@
             if(el) el.classList.add('active');
         }
 
-        // Programmatic Event Listener logic to bypass quote escaping bugs completely
+        // Programmatic Event Listener for schedule injection with weekly headers
         function updateSchedule(phase, el) {
             const tbody = document.getElementById('schedule-body');
             tbody.innerHTML = '';
             
+            let currentWeek = 0;
             schedules[phase].forEach(item => {
+                // Insert Week Header Row if week changes
+                if (item.w !== currentWeek) {
+                    currentWeek = item.w;
+                    const headerTr = document.createElement('tr');
+                    headerTr.className = 'bg-brand-100 text-brand-900 font-black text-xs uppercase tracking-widest';
+                    headerTr.innerHTML = `<td colspan="5" class="p-2 text-center">第 ${currentWeek} 週</td>`;
+                    tbody.appendChild(headerTr);
+                }
+
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-brand-50 transition border-b border-brand-100';
                 
-                let typeKey = 'easy';
-                if (item.t.includes('間歇')) typeKey = 'interval';
-                if (item.t.includes('門檻')) typeKey = 'tempo';
-                if (item.t.includes('長距離') || item.t.includes('里程')) typeKey = 'lsd';
-                if (item.t.includes('重訓') || item.t.includes('單邊')) typeKey = 'strength';
+                let typeKey = 'E';
+                if (item.c.includes('I')) typeKey = 'I';
+                else if (item.c.includes('R')) typeKey = 'R';
+                else if (item.c.includes('T')) typeKey = 'T';
+                else if (item.c.includes('M')) typeKey = 'M';
+                else if (item.g !== '無重訓') typeKey = 'Strength';
 
-                // Create Cells with matching width styling to ensure precise layout alignment and height
                 const tdDay = document.createElement('td');
                 tdDay.className = 'p-3 w-16 font-bold text-brand-600 align-middle whitespace-nowrap';
                 tdDay.innerText = `週${item.d}`;
@@ -858,7 +994,7 @@
                 const tdType = document.createElement('td');
                 tdType.className = 'p-3 w-32 text-center align-middle';
                 const typeSpan = document.createElement('span');
-                typeSpan.className = 'px-2 py-1 bg-white border border-brand-200 rounded text-xs font-bold text-brand-700 block';
+                typeSpan.className = 'px-2 py-1 bg-white border border-brand-200 rounded text-xs font-bold text-brand-700 block whitespace-nowrap';
                 typeSpan.innerText = item.t;
                 tdType.appendChild(typeSpan);
 
@@ -876,7 +1012,6 @@
                 actionBtn.className = 'bg-accent-teal hover:bg-teal-700 text-white text-[10px] font-bold px-2 py-1 rounded transition whitespace-nowrap';
                 actionBtn.innerText = '一鍵帶入';
                 
-                // Add robust programmatic event listener to bypass onclick quoting limits
                 actionBtn.addEventListener('click', () => {
                     importToLog(typeKey, `${item.t}：${item.c}`);
                 });
@@ -902,40 +1037,34 @@
         }
 
         function importToLog(typeKey, fullDesc) {
-            // Fill inputs on Track page
             document.getElementById('log-type').value = typeKey;
             document.getElementById('log-notes').value = fullDesc;
             document.getElementById('log-date').valueAsDate = new Date();
             
-            // Match reasonable intensities for the imported items
-            if (typeKey === 'interval') {
+            if (typeKey === 'I' || typeKey === 'R') {
                 document.getElementById('log-rpe').value = "8";
                 document.getElementById('log-duration').value = "50";
-            } else if (typeKey === 'tempo') {
+            } else if (typeKey === 'T') {
                 document.getElementById('log-rpe').value = "6";
                 document.getElementById('log-duration').value = "45";
-            } else if (typeKey === 'strength') {
-                document.getElementById('log-rpe').value = "6";
-                document.getElementById('log-duration').value = "60";
+            } else if (typeKey === 'Strength') {
+                document.getElementById('log-rpe').value = "5";
+                document.getElementById('log-duration').value = "40";
             } else {
                 document.getElementById('log-rpe').value = "4";
-                document.getElementById('log-duration').value = "40";
+                document.getElementById('log-duration').value = "60";
             }
             
             suggestDefaultTE();
             calculateTEFromRPE();
 
-            // Switch view automatically to Training Tracker
             switchTab('tab-track', document.querySelectorAll('.nav-tab')[3]);
             showStatusToast("📋 課表細節已成功帶入日誌！");
-            
-            // Scroll down
             document.getElementById('tab-track').scrollIntoView({ behavior: 'smooth' });
         }
 
         // --- SENSORS CLINICAL SLS SIMULATOR TRIGONOMETRY ENGINE ---
         function updateSLSSimulator() {
-            // Sliders value
             const sway = parseFloat(document.getElementById('input-sway').value); // Knee valgus: -15 to +5
             const pelvis = parseFloat(document.getElementById('input-pelvis').value); // Pelvis drop: -10 to +10
             const flexion = parseFloat(document.getElementById('input-flex').value); // Knee flexion: 35 to 90
@@ -944,7 +1073,6 @@
             document.getElementById('val-pelvis').innerText = `${pelvis >= 0 ? '+' : ''}${pelvis.toFixed(1)}°`;
             document.getElementById('val-flex').innerText = `${flexion.toFixed(1)}°`;
 
-            // SVG elements
             const spineLine = document.getElementById('spine-line');
             const pelvisLine = document.getElementById('pelvis-line');
             const leftFemur = document.getElementById('left-femur');
@@ -954,14 +1082,9 @@
             const sensorThigh = document.getElementById('sensor-thigh');
             const sensorTibia = document.getElementById('sensor-tibia');
 
-            // Trigonometry / Skeleton mapping configurations
-            const cx = 100; // Center spine anchor
-            const cy = 60;  // Spine origin
-            const pelvisCy = 100; // Pelvis center
-
-            // 1. Spine rotation based on Pelvis tilt to maintain posture equilibrium
+            const cx = 100, cy = 60, pelvisCy = 100;
             const pelvisTiltRad = (pelvis * Math.PI) / 180;
-            const spineTiltRad = -(pelvis * 0.4 * Math.PI) / 180; // Thoracic compensatory drift
+            const spineTiltRad = -(pelvis * 0.4 * Math.PI) / 180; 
 
             const spineStartX = cx + Math.sin(spineTiltRad) * 40;
             const spineStartY = cy - Math.cos(spineTiltRad) * 40;
@@ -971,7 +1094,6 @@
             spineLine.setAttribute('x2', cx.toFixed(1));
             spineLine.setAttribute('y2', pelvisCy.toFixed(1));
 
-            // 2. Pelvis lines
             const plx = cx - 30 * Math.cos(pelvisTiltRad);
             const ply = pelvisCy - 30 * Math.sin(pelvisTiltRad);
             const prx = cx + 30 * Math.cos(pelvisTiltRad);
@@ -982,18 +1104,8 @@
             pelvisLine.setAttribute('x2', prx.toFixed(1));
             pelvisLine.setAttribute('y2', pry.toFixed(1));
 
-            // 3. Right standing leg (Ankle anchored at floor: 115, 210)
-            const rightAnkleX = 115;
-            const rightAnkleY = 210;
-            
-            // Femur and Tibia scale factor based on flexion (Sagittal depth)
-            const bendRatio = Math.sin((flexion * Math.PI) / 180); // higher depth means knee extends horizontally
-            const verticalCompression = Math.cos(((90 - flexion) * 0.6 * Math.PI) / 180);
-
-            // Knee Valgus horizontal drift (sway offset)
-            const kneeValgusOffset = sway * 1.8; // collapse inwards means knee shifts leftwards
-            
-            // Compute real-time knee joint coordinates
+            const rightAnkleX = 115, rightAnkleY = 210;
+            const kneeValgusOffset = sway * 1.8;
             const rightKneeX = 120 + kneeValgusOffset;
             const rightKneeY = ply + (rightAnkleY - ply) * 0.5 + (90 - flexion) * 0.4;
 
@@ -1007,11 +1119,8 @@
             rightTibia.setAttribute('x2', rightAnkleX);
             rightTibia.setAttribute('y2', rightAnkleY);
 
-            // 4. Non-standing hanging leg (Left)
-            const leftKneeX = plx - 15;
-            const leftKneeY = ply + 30;
-            const leftAnkleX = leftKneeX + 5;
-            const leftAnkleY = leftKneeY + 30;
+            const leftKneeX = plx - 15, leftKneeY = ply + 30;
+            const leftAnkleX = leftKneeX + 5, leftAnkleY = leftKneeY + 30;
 
             leftFemur.setAttribute('x1', plx.toFixed(1));
             leftFemur.setAttribute('y1', ply.toFixed(1));
@@ -1023,86 +1132,52 @@
             leftTibia.setAttribute('x2', leftAnkleX.toFixed(1));
             leftTibia.setAttribute('y2', leftAnkleY.toFixed(1));
 
-            // 5. Active Sensors relative positions
             sensorThigh.setAttribute('cx', ((prx + rightKneeX) / 2).toFixed(1));
             sensorThigh.setAttribute('cy', ((pry + rightKneeY) / 2).toFixed(1));
-            
             sensorTibia.setAttribute('cx', ((rightKneeX + rightAnkleX) / 2).toFixed(1));
             sensorTibia.setAttribute('cy', ((rightKneeY + rightAnkleY) / 2).toFixed(1));
 
-            // --- Real-time diagnostics & indicators calculation ---
             let stiffnessVal = 100;
-            let pfpsVal = "正常";
-            let aclVal = "正常";
-            let spineCompVal = "正常";
-            let statusTag = "🟢 優良";
-            let statusColor = "bg-green-100 text-green-800 border-green-200";
+            let pfpsVal = "正常", aclVal = "正常", spineCompVal = "正常";
+            let statusTag = "🟢 優良", statusColor = "bg-green-100 text-green-800 border-green-200";
             let reportText = "";
 
-            // Structural logic calculations based on clinical parameters
-            const valgusSeverity = -sway; // Positive if knee valgus
-            const pelvisTiltSeverity = Math.abs(pelvis);
-
-            // Touch Stiffness calculation (impacted by depth & valgus stability)
+            const valgusSeverity = -sway, pelvisTiltSeverity = Math.abs(pelvis);
             stiffnessVal = Math.round((flexion / 90) * 100 - (valgusSeverity * 3.5) - (pelvisTiltSeverity * 2));
             if (stiffnessVal < 0) stiffnessVal = 0;
 
-            // Diagnostic logic
             if (valgusSeverity > 8) {
-                pfpsVal = "🔴 高度風險";
-                statusTag = "🔴 嚴重外翻";
-                statusColor = "bg-red-100 text-red-800 border-red-200";
-                rightFemur.setAttribute('stroke', '#D97757'); // Rust danger
-                rightTibia.setAttribute('stroke', '#D97757');
+                pfpsVal = "🔴 高度風險"; statusTag = "🔴 嚴重外翻"; statusColor = "bg-red-100 text-red-800 border-red-200";
+                rightFemur.setAttribute('stroke', '#D97757'); rightTibia.setAttribute('stroke', '#D97757');
             } else if (valgusSeverity > 3) {
-                pfpsVal = "🟡 中度風險";
-                statusTag = "🟡 輕度內扣";
-                statusColor = "bg-yellow-100 text-yellow-800 border-yellow-200";
-                rightFemur.setAttribute('stroke', '#D97757');
-                rightTibia.setAttribute('stroke', '#4A8E8B');
+                pfpsVal = "🟡 中度風險"; statusTag = "🟡 輕度內扣"; statusColor = "bg-yellow-100 text-yellow-800 border-yellow-200";
+                rightFemur.setAttribute('stroke', '#D97757'); rightTibia.setAttribute('stroke', '#4A8E8B');
             } else {
                 pfpsVal = "🟢 低風險";
-                rightFemur.setAttribute('stroke', '#4A8E8B');
-                rightTibia.setAttribute('stroke', '#4A8E8B');
+                rightFemur.setAttribute('stroke', '#4A8E8B'); rightTibia.setAttribute('stroke', '#4A8E8B');
             }
 
-            // Pelvic drop compensation on Spine
             if (pelvisTiltSeverity > 4) {
                 spineCompVal = "🔴 高代償";
-                if (statusTag !== "🔴 嚴重外翻") {
-                    statusTag = "🟡 骨盆不穩";
-                    statusColor = "bg-yellow-100 text-yellow-800 border-yellow-200";
-                }
-                pelvisLine.setAttribute('stroke', '#D97757');
-                spineLine.setAttribute('stroke', '#D97757');
+                if (statusTag !== "🔴 嚴重外翻") { statusTag = "🟡 骨盆不穩"; statusColor = "bg-yellow-100 text-yellow-800 border-yellow-200"; }
+                pelvisLine.setAttribute('stroke', '#D97757'); spineLine.setAttribute('stroke', '#D97757');
             } else {
                 spineCompVal = "🟢 無代償";
-                pelvisLine.setAttribute('stroke', '#33231e');
-                spineLine.setAttribute('stroke', '#33231e');
+                pelvisLine.setAttribute('stroke', '#33231e'); spineLine.setAttribute('stroke', '#33231e');
             }
 
-            // ACL Load based on flexion depth (Very shallow or extreme deep without stability leads to ACL/quad overloads)
-            if (flexion < 50) {
-                aclVal = "🟢 極低負荷";
-                stiffnessVal = Math.round(stiffnessVal * 0.7); // shallow squat yields low mechanical stiffness
-            } else if (flexion > 80 && valgusSeverity > 5) {
-                aclVal = "🔴 韌帶剪力大";
-            } else {
-                aclVal = "🟢 安全受控";
-            }
+            if (flexion < 50) { aclVal = "🟢 極低負荷"; stiffnessVal = Math.round(stiffnessVal * 0.7); } 
+            else if (flexion > 80 && valgusSeverity > 5) { aclVal = "🔴 韌帶剪力大"; } 
+            else { aclVal = "🟢 安全受控"; }
 
-            // Build diagnostic paragraphs
             if (statusTag.includes("優良")) {
-                reportText = "下肢動力鏈完美對齊。膝關節無明顯內扣，臀中肌與單側核心抗扭轉剛性強悍。繼續保持！這有助於維持太湖直道的觸地時間 (GCT) 低於 180 毫秒，釋放高爆發推進。";
+                reportText = "下肢動力鏈完美對齊。膝關節無明顯內扣，單側核心抗扭轉剛性強悍。有助於維持太湖直道的觸地時間 (GCT) 低於 180 毫秒。";
             } else if (statusTag.includes("內扣") || statusTag.includes("外翻")) {
-                reportText = `偵測到【動態膝外翻 (Dynamic Valgus)】。髕骨關節痛負荷上升。主因是臀中肌、股後腱肌群力道不足，導致大腿股骨落地內收代償。
-                <br><strong class="text-accent-orange">👉 修正指南：</strong>在週五神經日加強【保加利亞單腿蹲】及【側向彈力帶怪獸走路】。`;
+                reportText = `偵測到動態膝外翻 (Dynamic Valgus)，髕骨關節痛負荷上升。主因是臀中肌力道不足導致股骨內收代償。<br><strong class="text-accent-orange">👉 修正：</strong>神經日加強【保加利亞單腿蹲】。`;
             } else {
-                reportText = `偵測到【骨盆側傾/塌陷】。側向腰大肌及臀中肌無力維持髖部水平，導致胸椎產生 ${Math.abs(pelvis*0.4).toFixed(1)}° 的反向代償性傾斜，影響跑步時的擺臂對稱。
-                <br><strong class="text-accent-teal">👉 修正指南：</strong>在週三容量日增加負重【農夫走路】及【加重單腿臀橋】。`;
+                reportText = `偵測到骨盆側傾/塌陷。腰大肌及臀中肌無力維持髖部水平，導致胸椎產生 ${Math.abs(pelvis*0.4).toFixed(1)}° 代償性傾斜。<br><strong class="text-accent-teal">👉 修正：</strong>重訓日增加負重【農夫走路】。`;
             }
 
-            // Render text and colors to UI
             document.getElementById('sls-stiffness').innerText = `${stiffnessVal}%`;
             document.getElementById('sls-pfps-load').innerText = pfpsVal;
             document.getElementById('sls-acl-load').innerText = aclVal;
@@ -1111,56 +1186,49 @@
             const tagEl = document.getElementById('sls-status-tag');
             tagEl.innerText = statusTag;
             tagEl.className = `text-[10px] px-2.5 py-0.5 rounded font-bold border ${statusColor}`;
-
             document.getElementById('sls-diagnosis-text').innerHTML = reportText;
         }
 
-        // Save SLS assessment method
         function saveSLSAssessment() {
             const sway = parseFloat(document.getElementById('input-sway').value);
             const pelvis = parseFloat(document.getElementById('input-pelvis').value);
             const flexion = parseFloat(document.getElementById('input-flex').value);
             const stiffness = document.getElementById('sls-stiffness').innerText;
             
-            // Build notes automatically based on dynamic values
-            const logNotes = `【動作檢測】SLS 單腿蹲檢測：下蹲深度 ${flexion}°，膝關節內扣 ${Math.abs(sway).toFixed(1)}° (Sway)，骨盆偏轉 ${Math.abs(pelvis).toFixed(1)}°。觸地剛性評分為：${stiffness}。診斷結論：${document.getElementById('sls-diagnosis-text').innerText.split('👉')[0].trim()}`;
+            const logNotes = `【動作檢測】SLS 單腿蹲：下蹲深度 ${flexion}°，膝關節內扣 ${Math.abs(sway).toFixed(1)}°，骨盆偏轉 ${Math.abs(pelvis).toFixed(1)}°。剛性：${stiffness}。診斷結論：${document.getElementById('sls-diagnosis-text').innerText.split('👉')[0].trim()}`;
 
             const logItem = {
-                type: 'strength',
+                type: 'Strength',
                 date: new Date().toISOString().split('T')[0],
                 notes: logNotes,
                 img: null,
-                te: 1.5, // SLS test counts as active light assessment recovery
+                te: 1.5,
                 rpe: 3,
                 duration: 15,
+                distance: 0,
                 restHr: runnerProfile.baselineRestHr
             };
 
             trainingLogs.unshift(logItem);
             saveLogsToStorage();
-            
             showStatusToast("💾 SLS 動作檢測報告已成功儲存至訓練歷史中！");
         }
 
-        // --- FIRSTBEAT TE ESTIMATION MODEL ENGINE (Based on Article 2) ---
+        // --- FIRSTBEAT TE ESTIMATION MODEL ENGINE ---
         function suggestDefaultTE() {
             const type = document.getElementById('log-type').value;
-            // Guide default duration/intensity expectations based on type
-            if (type === 'interval') {
+            if (type === 'I' || type === 'R') {
                 document.getElementById('log-rpe').value = "8";
                 document.getElementById('log-duration').value = "50";
-            } else if (type === 'tempo') {
+            } else if (type === 'T') {
                 document.getElementById('log-rpe').value = "6";
-                document.getElementById('log-duration').value = "40";
-            } else if (type === 'lsd') {
-                document.getElementById('log-rpe').value = "4";
-                document.getElementById('log-duration').value = "90";
-            } else if (type === 'strength') {
+                document.getElementById('log-duration').value = "45";
+            } else if (type === 'Strength') {
                 document.getElementById('log-rpe').value = "5";
-                document.getElementById('log-duration').value = "60";
+                document.getElementById('log-duration').value = "45";
             } else {
-                document.getElementById('log-rpe').value = "3";
-                document.getElementById('log-duration').value = "30";
+                document.getElementById('log-rpe').value = "4";
+                document.getElementById('log-duration').value = "60";
             }
         }
 
@@ -1169,69 +1237,40 @@
             const dur = parseInt(document.getElementById('log-duration').value);
             const activityClass = runnerProfile.activityClass || 8;
 
-            // Firstbeat EPOC estimation formulas mapping
-            // Higher duration & intensity (RPE) exponentially increases Peak EPOC
             const intensityFactor = Math.pow(1.4, rpe) * 0.3;
             const rawEpoc = dur * intensityFactor * (1.1 - (activityClass / 20));
             
-            // Estimate Training Effect (TE) from estimated EPOC relative to activity class index limits
             let estimatedTE = 1.0;
-            if (activityClass >= 8) {
-                // Elite athletic engine: higher EPOC needed for same TE scale
-                estimatedTE = 1.0 + (rawEpoc / 65);
-            } else if (activityClass >= 5) {
-                estimatedTE = 1.0 + (rawEpoc / 45);
-            } else {
-                // Beginner Class
-                estimatedTE = 1.0 + (rawEpoc / 25);
-            }
+            if (activityClass >= 8) estimatedTE = 1.0 + (rawEpoc / 65);
+            else if (activityClass >= 5) estimatedTE = 1.0 + (rawEpoc / 45);
+            else estimatedTE = 1.0 + (rawEpoc / 25);
 
-            // Clamp TE between 1.0 and 5.0
             if (estimatedTE > 5.0) estimatedTE = 5.0;
             if (estimatedTE < 1.0) estimatedTE = 1.0;
 
             document.getElementById('log-te').value = estimatedTE.toFixed(1);
             
-            // Render Description based on Firstbeat TE boundaries
-            let desc = "";
-            let colorClass = "text-gray-500";
-            if (estimatedTE >= 5.0) {
-                desc = "5.0: 非常辛苦 ｜ 已經超量超負荷！";
-                colorClass = "text-red-600 font-extrabold";
-            } else if (estimatedTE >= 4.0) {
-                desc = `${estimatedTE.toFixed(1)}: 很辛苦 ｜ 大幅提升有氧體能`;
-                colorClass = "text-orange-600 font-bold";
-            } else if (estimatedTE >= 3.0) {
-                desc = `${estimatedTE.toFixed(1)}: 中等 ｜ 逐步提升體能效果`;
-                colorClass = "text-accent-teal font-bold";
-            } else if (estimatedTE >= 2.0) {
-                desc = `${estimatedTE.toFixed(1)}: 輕鬆 ｜ 恢復並維持既有有氧體能`;
-                colorClass = "text-green-600 font-bold";
-            } else {
-                desc = `${estimatedTE.toFixed(1)}: 非常輕鬆 ｜ 主動動態恢復`;
-                colorClass = "text-gray-500 font-normal";
-            }
+            let desc = "", colorClass = "text-gray-500";
+            if (estimatedTE >= 5.0) { desc = "5.0: 超負荷！"; colorClass = "text-red-600 font-extrabold"; } 
+            else if (estimatedTE >= 4.0) { desc = `${estimatedTE.toFixed(1)}: 大幅提升體能`; colorClass = "text-orange-600 font-bold"; } 
+            else if (estimatedTE >= 3.0) { desc = `${estimatedTE.toFixed(1)}: 提升體能效果`; colorClass = "text-accent-teal font-bold"; } 
+            else if (estimatedTE >= 2.0) { desc = `${estimatedTE.toFixed(1)}: 恢復並維持`; colorClass = "text-green-600 font-bold"; } 
+            else { desc = `${estimatedTE.toFixed(1)}: 主動恢復`; colorClass = "text-gray-500 font-normal"; }
 
             const descEl = document.getElementById('log-te-desc');
             descEl.innerText = desc;
             descEl.className = `text-[11px] font-bold ${colorClass}`;
 
             if (manualClick) {
-                showStatusToast(`🤖 智能模型計算：預估 Peak EPOC 達 ${Math.round(rawEpoc)} ml/kg，精確 TE 為 ${estimatedTE.toFixed(1)}`);
+                showStatusToast(`🤖 預估 Peak EPOC 達 ${Math.round(rawEpoc)} ml/kg，精確 TE 為 ${estimatedTE.toFixed(1)}`);
             }
         }
 
-        // --- TRACKER & OTS WARNING SYSTEM ENGINE (Based on Article 3) ---
+        // --- TRACKER & OTS WARNING SYSTEM ENGINE ---
         function updateOTSReport() {
             const otsBadge = document.getElementById('ots-badge');
+            let recentTeSum = 0, recentHighTeCount = 0, hrRestVariance = 0, latestHrRest = runnerProfile.baselineRestHr, formStatus = 0;
             
-            let recentTeSum = 0;
-            let recentHighTeCount = 0;
-            let hrRestVariance = 0;
-            let latestHrRest = runnerProfile.baselineRestHr;
-            let formStatus = 0; // Current simulated TSB
-            
-            // Calculate actual variables from stored logs in the last 7 days
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -1243,125 +1282,59 @@
                 if (te >= 4.0) recentHighTeCount++;
             });
 
-            // Rest heart rate drift assessment (compared with baseline baselineRestHr)
             const hrLogs = trainingLogs.filter(log => log.restHr && parseInt(log.restHr) > 0);
             if (hrLogs.length > 0) {
                 latestHrRest = parseInt(hrLogs[0].restHr);
                 hrRestVariance = latestHrRest - runnerProfile.baselineRestHr;
             }
 
-            // Simple TSB Form estimation logic based on logs density
-            // High frequency of interval and tempo logs pulls TSB negative (Fatigue rises fast)
-            const intensiveLogs = trainingLogs.filter(log => log.type === 'interval' || log.type === 'tempo');
+            const intensiveLogs = trainingLogs.filter(log => log.type === 'I' || log.type === 'T' || log.type === 'R');
             formStatus = 10 - (intensiveLogs.length * 6) + (trainingLogs.length - intensiveLogs.length) * 3;
             if (formStatus > 95) formStatus = 95;
             if (formStatus < -40) formStatus = -40;
 
-            // Compute overall OTS risk score (0 to 100)
             let riskScore = 15;
-            
-            // Cumulative TE Stress (Firstbeat overload)
-            if (recentTeSum > 18) riskScore += 35;
-            else if (recentTeSum > 12) riskScore += 18;
-
-            // Heart rate drift (autonomic nervous indicators)
-            if (hrRestVariance >= 6) riskScore += 35;
-            else if (hrRestVariance >= 3) riskScore += 18;
-
-            // Form Status fatigue load (TSB)
-            if (formStatus < -15) riskScore += 25;
-            else if (formStatus < 0) riskScore += 12;
-
-            // Overreaching risk indicators (continuous high TE workouts)
+            if (recentTeSum > 18) riskScore += 35; else if (recentTeSum > 12) riskScore += 18;
+            if (hrRestVariance >= 6) riskScore += 35; else if (hrRestVariance >= 3) riskScore += 18;
+            if (formStatus < -15) riskScore += 25; else if (formStatus < 0) riskScore += 12;
             if (recentHighTeCount >= 2) riskScore += 15;
-
-            // Clamp Risk
             if (riskScore > 100) riskScore = 100;
 
-            // Update DOM metrics
             document.getElementById('ots-hr-val').innerText = `${latestHrRest} bpm`;
             const hrEl = document.getElementById('ots-hr-status');
-            if (hrRestVariance > 5) {
-                hrEl.innerText = `⚠️ 嚴重升高 (+${hrRestVariance})`;
-                hrEl.className = "text-[10px] text-red-600 font-bold";
-            } else if (hrRestVariance > 2) {
-                hrEl.innerText = `⚡ 輕度升高 (+${hrRestVariance})`;
-                hrEl.className = "text-[10px] text-yellow-600 font-bold";
-            } else {
-                hrEl.innerText = `🟢 正常 (±${hrRestVariance})`;
-                hrEl.className = "text-[10px] text-green-600 font-bold";
-            }
+            if (hrRestVariance > 5) { hrEl.innerText = `⚠️ 升高 (+${hrRestVariance})`; hrEl.className = "text-[10px] text-red-600 font-bold"; } 
+            else if (hrRestVariance > 2) { hrEl.innerText = `⚡ 微高 (+${hrRestVariance})`; hrEl.className = "text-[10px] text-yellow-600 font-bold"; } 
+            else { hrEl.innerText = `🟢 正常 (±${hrRestVariance})`; hrEl.className = "text-[10px] text-green-600 font-bold"; }
 
             document.getElementById('ots-te-val').innerText = `${recentTeSum.toFixed(1)} / 7d`;
             const teEl = document.getElementById('ots-te-status');
-            if (recentTeSum > 18) {
-                teEl.innerText = "⚠️ 負荷超限";
-                teEl.className = "text-[10px] text-red-600 font-bold";
-            } else if (recentTeSum > 12) {
-                teEl.innerText = "⚡ 負荷偏高";
-                teEl.className = "text-[10px] text-yellow-600 font-bold";
-            } else {
-                teEl.innerText = "🟢 有氧適應良好";
-                teEl.className = "text-[10px] text-green-600 font-bold";
-            }
+            if (recentTeSum > 18) { teEl.innerText = "⚠️ 負荷超限"; teEl.className = "text-[10px] text-red-600 font-bold"; } 
+            else if (recentTeSum > 12) { teEl.innerText = "⚡ 負荷偏高"; teEl.className = "text-[10px] text-yellow-600 font-bold"; } 
+            else { teEl.innerText = "🟢 適應良好"; teEl.className = "text-[10px] text-green-600 font-bold"; }
 
             document.getElementById('ots-tsb-val').innerText = `${formStatus > 0 ? '+' : ''}${formStatus}`;
             const tsbEl = document.getElementById('ots-tsb-status');
-            if (formStatus < -15) {
-                tsbEl.innerText = "⚠️ 交感疲勞";
-                tsbEl.className = "text-[10px] text-red-600 font-bold";
-            } else if (formStatus < 0) {
-                tsbEl.innerText = "⚡ 有氧適應期";
-                tsbEl.className = "text-[10px] text-yellow-600 font-bold";
-            } else {
-                tsbEl.innerText = "🟢 狀態清新";
-                tsbEl.className = "text-[10px] text-green-600 font-bold";
-            }
+            if (formStatus < -15) { tsbEl.innerText = "⚠️ 交感疲勞"; tsbEl.className = "text-[10px] text-red-600 font-bold"; } 
+            else if (formStatus < 0) { tsbEl.innerText = "⚡ 適應期"; tsbEl.className = "text-[10px] text-yellow-600 font-bold"; } 
+            else { tsbEl.innerText = "🟢 狀態清新"; tsbEl.className = "text-[10px] text-green-600 font-bold"; }
 
-            // Overall risk warning render and advisory messages
             const adviceEl = document.getElementById('ots-advice');
             if (riskScore >= 65) {
-                otsBadge.innerText = `🔴 高度 OTS 風氣 (${riskScore}%)`;
+                otsBadge.innerText = `🔴 高度風險 (${riskScore}%)`;
                 otsBadge.className = "px-3 py-1 text-xs font-bold rounded-full border bg-red-100 text-red-800 border-red-200";
-                adviceEl.innerHTML = `⚠️ <strong class="text-red-700">警告：系統偵測到高度過度訓練風險！</strong>靜息心率明顯漂移，交感神經高負荷。週六 LSD 或高強度間歇需強制降階為「主動恢復 (E)」，或完全停跑休息 48 小時。`;
+                adviceEl.innerHTML = `⚠️ <strong class="text-red-700">警告：系統偵測到過度訓練風險！</strong>交感神經高負荷，請將高強度課表降階為「主動恢復 (E)」，或全休 48 小時。`;
             } else if (riskScore >= 35) {
-                otsBadge.innerText = `🟡 中度疲勞累積 (${riskScore}%)`;
+                otsBadge.innerText = `🟡 中度疲勞 (${riskScore}%)`;
                 otsBadge.className = "px-3 py-1 text-xs font-bold rounded-full border bg-yellow-100 text-yellow-800 border-yellow-200";
-                adviceEl.innerHTML = `⚡ <strong class="text-yellow-700">提示：身體正處於疲勞累積超補償階段。</strong>累積 TE 已接近上限，建議穿插 2~3 次輕鬆恢復跑 (TE 1.5~2.5) 以促進血液微循環，加快乳酸排酸。`;
+                adviceEl.innerHTML = `⚡ <strong class="text-yellow-700">提示：正處於疲勞超補償階段。</strong>建議穿插 2~3 次輕鬆恢復跑 (TE 1.5~2.5) 以促進微循環排酸。`;
             } else {
-                otsBadge.innerText = `🟢 綠色安全期 (${riskScore}%)`;
+                otsBadge.innerText = `🟢 安全期 (${riskScore}%)`;
                 otsBadge.className = "px-3 py-1 text-xs font-bold rounded-full border bg-green-100 text-green-800 border-green-200";
-                adviceEl.innerHTML = `🟢 <strong class="text-green-700">狀態優良：目前自律神經系統適應極佳！</strong>各項生理指標安全平衡，今日適合挑戰標準專項強度課表。`;
+                adviceEl.innerHTML = `🟢 <strong class="text-green-700">狀態優良：自律神經適應極佳！</strong>各項生理指標平衡，今日適合挑戰標準專項強度課表。`;
             }
         }
 
-        // --- IMAGE MANAGEMENT CODES ---
-        document.getElementById('log-img').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    uploadedImageBase64 = event.target.result;
-                    const preview = document.getElementById('image-preview-thumbnail');
-                    preview.src = uploadedImageBase64;
-                    preview.classList.remove('hidden');
-                    document.getElementById('remove-preview-btn').classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Clear Uploaded image cache
-        function removeUploadedImage() {
-            uploadedImageBase64 = null;
-            const preview = document.getElementById('image-preview-thumbnail');
-            preview.src = "";
-            preview.classList.add('hidden');
-            document.getElementById('remove-preview-btn').classList.add('hidden');
-            document.getElementById('log-img').value = "";
-        }
-
-        // --- LOCAL STORAGE DATA ENGINE ---
+        // --- LOCAL STORAGE & METRICS ENGINE ---
         function loadLogs() {
             const data = localStorage.getItem(STORAGE_KEY);
             trainingLogs = data ? JSON.parse(data) : [];
@@ -1377,71 +1350,102 @@
             updateOTSReport();
         }
 
+        // Helper to get week start date (Monday)
+        function getStartOfWeek(date) {
+            const d = new Date(date);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            return new Date(d.setDate(diff)).setHours(0,0,0,0);
+        }
+
         function renderLogs() {
             const list = document.getElementById('log-list');
             list.innerHTML = '';
             
             const filter = document.getElementById('history-filter').value;
-            let stats = { interval: 0, tempo: 0, lsd: 0, strength: 0 };
+            
+            // Stats Counters
+            let counts = { E: 0, M: 0, T: 0, I: 0, R: 0, Strength: 0 };
+            let weeklyDist = 0, monthlyDist = 0, totalDist = 0;
+            
+            const today = new Date();
+            const startOfWeek = getStartOfWeek(today);
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).setHours(0,0,0,0);
 
             // Calculate overall stats
             trainingLogs.forEach(log => {
-                if (log.type === 'interval') stats.interval++;
-                if (log.type === 'tempo') stats.tempo++;
-                if (log.type === 'lsd' || log.type === 'easy') stats.lsd++;
-                if (log.type === 'strength') stats.strength++;
+                // Map old/legacy types if any
+                let t = log.type;
+                if (t === 'lsd' || t === 'easy') t = 'E';
+                if (t === 'tempo') t = 'T';
+                if (t === 'interval') t = 'I';
+                if (t === 'strength') t = 'Strength';
+                if (counts[t] !== undefined) counts[t]++;
+
+                // Distance calculation
+                const dist = parseFloat(log.distance) || 0;
+                const logTime = new Date(log.date).setHours(0,0,0,0);
+                
+                totalDist += dist;
+                if (logTime >= startOfWeek) weeklyDist += dist;
+                if (logTime >= startOfMonth) monthlyDist += dist;
             });
+
+            // Update Stats UI
+            document.getElementById('cnt-e').innerText = counts.E;
+            document.getElementById('cnt-m').innerText = counts.M;
+            document.getElementById('cnt-t').innerText = counts.T;
+            document.getElementById('cnt-i').innerText = counts.I;
+            document.getElementById('cnt-r').innerText = counts.R;
+            document.getElementById('cnt-s').innerText = counts.Strength;
+            
+            document.getElementById('stat-weekly-dist').innerText = weeklyDist.toFixed(1);
+            document.getElementById('stat-monthly-dist').innerText = monthlyDist.toFixed(1);
+            document.getElementById('stat-total-dist').innerText = totalDist.toFixed(1);
 
             // Apply filter mapping for the view
             const filteredLogs = trainingLogs.filter(log => {
                 if (filter === 'all') return true;
-                if (filter === 'interval') return log.type === 'interval';
-                if (filter === 'tempo') return log.type === 'tempo';
-                if (filter === 'strength') return log.type === 'strength';
-                return true;
+                let t = log.type;
+                if (t === 'lsd' || t === 'easy') t = 'E';
+                if (t === 'tempo') t = 'T';
+                if (t === 'interval') t = 'I';
+                if (t === 'strength') t = 'Strength';
+                return t === filter;
             });
 
             if (filteredLogs.length === 0) {
-                list.innerHTML = `
-                    <p id="empty-message" class="p-8 text-center text-brand-400 text-sm italic leading-relaxed">
-                        此篩選條件下目前無符合的紀錄。
-                    </p>
-                `;
+                list.innerHTML = `<p class="p-8 text-center text-brand-400 text-sm italic leading-relaxed">此篩選條件下目前無符合的紀錄。</p>`;
             } else {
                 filteredLogs.forEach((log, index) => {
-                    let imgHtml = '';
-                    if (log.img) {
-                        imgHtml = `
-                            <div class="mt-2">
-                                <img src="${log.img}" class="max-h-24 rounded border border-brand-200 object-cover cursor-pointer hover:opacity-90 shadow-sm" onclick="viewImageFull('${log.img}')">
-                            </div>
-                        `;
-                    }
+                    // Type standardization for UI
+                    let displayType = log.type;
+                    if (displayType === 'lsd' || displayType === 'easy') displayType = 'E';
+                    if (displayType === 'tempo') displayType = 'T';
+                    if (displayType === 'interval') displayType = 'I';
+                    if (displayType === 'strength') displayType = '重訓';
 
-                    // Render Firstbeat indicators badge mapping
                     const teVal = parseFloat(log.te) || 1.0;
                     let teBadgeColor = "bg-gray-200 text-gray-700";
                     if (teVal >= 4.0) teBadgeColor = "bg-orange-100 text-orange-800 border-orange-200";
                     else if (teVal >= 3.0) teBadgeColor = "bg-teal-100 text-teal-800 border-teal-200";
                     else if (teVal >= 2.0) teBadgeColor = "bg-green-100 text-green-800 border-green-200";
 
-                    // Rest HR information badge
-                    let restHrHtml = log.restHr ? `<span class="px-2 py-0.5 bg-brand-50 border text-brand-600 rounded text-[10px] font-mono">晨脈: ${log.restHr}</span>` : '';
+                    let distHtml = log.distance && log.distance > 0 ? `<span class="px-2 py-0.5 bg-brand-50 border border-brand-200 text-brand-800 rounded text-[10px] font-mono font-bold">${log.distance} km</span>` : '';
 
                     const item = document.createElement('div');
-                    item.className = 'p-4 hover:bg-brand-50 transition border-l-4 border-l-brand-800 bg-white mb-2 rounded-xl border border-brand-100 relative';
+                    item.className = 'p-3 hover:bg-white transition border-l-4 border-l-brand-800 bg-brand-50/50 mb-2 rounded-xl border border-brand-100 relative';
                     item.innerHTML = `
                         <div class="flex flex-wrap gap-2 justify-between items-start mb-2">
                             <div class="flex gap-1.5 items-center flex-wrap">
-                                <span class="px-2 py-0.5 bg-brand-800 text-white rounded text-[10px] font-bold uppercase tracking-wider">${log.type}</span>
+                                <span class="px-2 py-0.5 bg-brand-800 text-white rounded text-[10px] font-bold uppercase tracking-wider">${displayType}</span>
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${teBadgeColor}">TE ${teVal.toFixed(1)}</span>
-                                ${restHrHtml}
+                                ${distHtml}
                             </div>
                             <span class="text-xs text-brand-400 font-mono">${log.date}</span>
                         </div>
-                        <p class="text-xs md:text-sm text-brand-700 italic leading-relaxed font-semibold pr-16">${log.notes}</p>
-                        ${imgHtml}
-                        <div class="absolute right-2 bottom-2 flex gap-1">
+                        <p class="text-xs text-brand-700 italic leading-relaxed font-semibold pr-16">${log.notes}</p>
+                        <div class="absolute right-2 bottom-2 flex gap-1 hide-on-print">
                             <button onclick="editLog(${index})" class="text-xs text-accent-teal hover:underline font-bold px-2 py-1">編輯</button>
                             <button onclick="confirmDelete(${index})" class="text-xs text-red-600 hover:underline font-bold px-2 py-1">刪除</button>
                         </div>
@@ -1449,12 +1453,6 @@
                     list.appendChild(item);
                 });
             }
-
-            // Update stats cards
-            document.getElementById('stat-interval').innerText = stats.interval;
-            document.getElementById('stat-tempo').innerText = stats.tempo;
-            document.getElementById('stat-lsd').innerText = stats.lsd;
-            document.getElementById('stat-strength').innerText = stats.strength;
         }
 
         function saveTrainingLog() {
@@ -1464,6 +1462,7 @@
             const restHr = document.getElementById('log-resthr').value || runnerProfile.baselineRestHr;
             const rpe = parseInt(document.getElementById('log-rpe').value);
             const duration = parseInt(document.getElementById('log-duration').value);
+            const distance = parseFloat(document.getElementById('log-distance').value) || 0;
             const te = parseFloat(document.getElementById('log-te').value) || 2.5;
             
             if(!notes || !date) {
@@ -1475,10 +1474,10 @@
                 type: type,
                 date: date,
                 notes: notes,
-                img: uploadedImageBase64,
                 restHr: parseInt(restHr),
                 rpe: rpe,
                 duration: duration,
+                distance: distance,
                 te: te
             };
 
@@ -1498,48 +1497,46 @@
             
             // Clear inputs
             document.getElementById('log-notes').value = '';
+            document.getElementById('log-distance').value = '';
             document.getElementById('log-date').valueAsDate = new Date();
             document.getElementById('log-resthr').value = '';
-            removeUploadedImage();
         }
 
         function editLog(index) {
             editIndex = index;
             const log = trainingLogs[index];
-            document.getElementById('log-type').value = log.type;
+            
+            // Handle legacy format fallback if necessary
+            let setType = log.type;
+            if(setType === 'lsd' || setType === 'easy') setType = 'E';
+            if(setType === 'tempo') setType = 'T';
+            if(setType === 'interval') setType = 'I';
+            if(setType === 'strength') setType = 'Strength';
+
+            document.getElementById('log-type').value = setType;
             document.getElementById('log-date').value = log.date;
             document.getElementById('log-notes').value = log.notes;
             document.getElementById('log-resthr').value = log.restHr || '';
             document.getElementById('log-te').value = log.te || 2.5;
             document.getElementById('log-rpe').value = log.rpe || 6;
             document.getElementById('log-duration').value = log.duration || 45;
+            document.getElementById('log-distance').value = log.distance || '';
             
-            if (log.img) {
-                uploadedImageBase64 = log.img;
-                const preview = document.getElementById('image-preview-thumbnail');
-                preview.src = log.img;
-                preview.classList.remove('hidden');
-                document.getElementById('remove-preview-btn').classList.remove('hidden');
-            } else {
-                removeUploadedImage();
-            }
-
             calculateTEFromRPE();
 
             document.getElementById('submit-btn-text').innerText = '更新紀錄';
             document.getElementById('cancel-edit-btn').classList.remove('hidden');
             document.getElementById('form-title').innerHTML = '<span>✏️</span> 編輯訓練紀錄';
             
-            // Scroll to form smoothly
             document.getElementById('tab-track').scrollIntoView({ behavior: 'smooth' });
         }
 
         function cancelEdit() {
             editIndex = -1;
             document.getElementById('log-notes').value = '';
+            document.getElementById('log-distance').value = '';
             document.getElementById('log-date').valueAsDate = new Date();
             document.getElementById('log-resthr').value = '';
-            removeUploadedImage();
             document.getElementById('submit-btn-text').innerText = '儲存紀錄';
             document.getElementById('cancel-edit-btn').classList.add('hidden');
             document.getElementById('form-title').innerHTML = '<span>📝</span> 紀錄今日訓練';
@@ -1572,30 +1569,47 @@
             }
         }
 
-        function viewImageFull(src) {
-            const target = document.getElementById('image-view-target');
-            target.src = src;
-            document.getElementById('image-view-modal').classList.remove('hidden');
-        }
+        // --- PDF EXPORT ENGINE ---
+        function exportToPDF() {
+            // Hide buttons and controls during print
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .hide-on-print { display: none !important; }
+                #export-area { padding: 10px; border:none; box-shadow:none; }
+                #log-list { max-height: none !important; overflow: visible !important; }
+            `;
+            document.head.appendChild(style);
+            
+            document.getElementById('pdf-overlay').classList.remove('hidden');
+            
+            const element = document.getElementById('export-area');
+            const opt = {
+                margin:       10,
+                filename:     'Sub40_Training_Report.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
 
-        // Close View modal
-        function closeImageViewModal() {
-            document.getElementById('image-view-modal').classList.add('hidden');
+            setTimeout(() => {
+                html2pdf().set(opt).from(element).save().then(() => {
+                    document.getElementById('pdf-overlay').classList.add('hidden');
+                    document.head.removeChild(style); // Restore normal view
+                    showStatusToast("✅ 訓練報表 PDF 匯出完成！");
+                });
+            }, 500);
         }
 
         // --- CHART JS STRESS TSB BALANCER MODELLER ---
         function initCharts() {
             const ctx = document.getElementById('tsbChart').getContext('2d');
             
-            // Dynamic TSB baseline values logic
             let baseFitness = 25;
             let baseFatigue = 15;
             let baseForm = 10;
             
-            // Modify chart trends based on actual logs database count to create customized realism
             if (trainingLogs.length > 0) {
                 const totalTE = trainingLogs.reduce((acc, log) => acc + (parseFloat(log.te) || 1.0), 0);
-                const averageTE = totalTE / trainingLogs.length;
                 
                 baseFatigue = Math.round(15 + totalTE * 2.8);
                 baseFitness = Math.round(25 + totalTE * 1.5);
@@ -1606,7 +1620,6 @@
                 if (baseForm < -50) baseForm = -50;
             }
 
-            // If chart already exists, destroy it before recreating
             if (tsbChartInstance) {
                 tsbChartInstance.destroy();
             }
